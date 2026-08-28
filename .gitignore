@@ -6,6 +6,8 @@ agentcore-dist/
 out/
 .wrangler/
 .env
+.env.*
+!.env.example
 .DS_Store
 coverage/
 output/

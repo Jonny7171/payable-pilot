@@ -39,12 +39,41 @@ const genericSupplierWords = new Set([
   "the",
 ]);
 
+const adverseTerms = [
+  "breach",
+  "charged",
+  "charges",
+  "fraud",
+  "investigation",
+  "lawsuit",
+  "recall",
+  "sanction",
+  "scam",
+  "settlement",
+  "sued",
+  "violation",
+];
+
 function identityTokens(supplier: string): string[] {
   const tokens = supplier
     .toLowerCase()
     .split(/[^a-z0-9]+/)
     .filter((token) => token.length >= 3 && !genericSupplierWords.has(token));
   return tokens.length > 0 ? tokens : supplier.toLowerCase().split(/\s+/).slice(0, 2);
+}
+
+function compactSource(result: SerpOrganicResult): SerpOrganicResult {
+  return {
+    title: result.title,
+    link: result.link,
+    snippet: result.snippet,
+    source: result.source,
+    date: result.date,
+  };
+}
+
+export function supplierIdentityQuery(supplier: string): string {
+  return `"${identityTokens(supplier).join(" ")}" official company`;
 }
 
 export function summarizeVendorIntel(
@@ -59,7 +88,8 @@ export function summarizeVendorIntel(
       const text = `${result.title ?? ""} ${result.snippet ?? ""}`.toLowerCase();
       return tokens.every((token) => text.includes(token));
     })
-    .slice(0, 3);
+    .slice(0, 3)
+    .map(compactSource);
 
   return {
     supplier,
@@ -67,10 +97,15 @@ export function summarizeVendorIntel(
       status: identitySources.length > 0 ? "matched" : "unverified",
       sources: identitySources,
     },
-    adverseNews: (newsResponse.news_results ?? newsResponse.organic_results ?? []).slice(
-      0,
-      5,
-    ),
+    adverseNews: (newsResponse.news_results ?? newsResponse.organic_results ?? [])
+      .filter((result) => {
+        const text = `${result.title ?? ""} ${result.snippet ?? ""}`.toLowerCase();
+        const namesSupplier = tokens.every((token) => text.includes(token));
+        const namesAdverseEvent = adverseTerms.some((term) => text.includes(term));
+        return namesSupplier && namesAdverseEvent;
+      })
+      .slice(0, 5)
+      .map(compactSource),
     searchIds: [
       identityResponse.search_metadata?.id,
       newsResponse.search_metadata?.id,
@@ -110,7 +145,7 @@ export async function researchVendor(supplier: string): Promise<VendorIntelResul
   if (!apiKey) throw new Error("SERPAPI_API_KEY is required for supplier research");
 
   const [identityResponse, newsResponse] = await Promise.all([
-    serpSearch(apiKey, `"${supplier}" official company`),
+    serpSearch(apiKey, supplierIdentityQuery(supplier)),
     serpSearch(apiKey, `"${supplier}" fraud OR scam OR lawsuit OR recall OR breach`, "nws"),
   ]);
 

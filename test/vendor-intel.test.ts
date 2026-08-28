@@ -1,6 +1,9 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { summarizeVendorIntel } from "../src/vendor-intel.js";
+import {
+  summarizeVendorIntel,
+  supplierIdentityQuery,
+} from "../src/vendor-intel.js";
 
 test("keeps supplier identity conclusions tied to matching sources", () => {
   const result = summarizeVendorIntel(
@@ -19,7 +22,9 @@ test("keeps supplier identity conclusions tied to matching sources", () => {
     {
       search_metadata: { id: "news-search" },
       news_results: [
-        { title: "Northstar opens a warehouse", link: "https://news.example" },
+        { title: "Northstar sued over contract", link: "https://news.example/adverse" },
+        { title: "Northstar opens a warehouse", link: "https://news.example/neutral" },
+        { title: "Another supplier faces fraud charges", link: "https://news.example/unrelated" },
       ],
     },
     "2026-08-28T12:00:00.000Z",
@@ -41,4 +46,8 @@ test("reports an unverified identity without inventing a fraud finding", () => {
   assert.equal(result.identity.status, "unverified");
   assert.deepEqual(result.identity.sources, []);
   assert.deepEqual(result.adverseNews, []);
+});
+
+test("removes punctuation-only initials from the identity query", () => {
+  assert.equal(supplierIdentityQuery("W.W. Grainger"), '"grainger" official company');
 });
