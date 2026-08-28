@@ -68,6 +68,12 @@ pnpm agentcore:build
 pnpm agentcore:start
 ```
 
+It also exposes the deterministic decision engine at `POST /v1/decisions` for
+API clients. The checked-in [Kong configuration](kong/kong.yml) puts customer
+authentication, rate limits, usage metering, and billing in front of that
+endpoint. See [the Kong build notes](docs/kong-submission.md) for the validation
+path.
+
 The Strands agent uses these custom tools:
 
 - `list_pending_packets`

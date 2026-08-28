@@ -1,0 +1,44 @@
+_format_version: "3.0"
+
+services:
+  - name: payable-pilot-decision-api
+    url: http://host.docker.internal:8080
+
+routes:
+  - name: payable-pilot-decisions
+    service:
+      name: payable-pilot-decision-api
+    paths:
+      - /v1/decisions
+    methods:
+      - POST
+    strip_path: false
+
+plugins:
+  - name: key-auth
+    service: payable-pilot-decision-api
+    config:
+      key_names:
+        - apikey
+      hide_credentials: true
+
+  - name: rate-limiting
+    service: payable-pilot-decision-api
+    config:
+      minute: 60
+      policy: local
+
+  - name: metering-and-billing
+    service: payable-pilot-decision-api
+    config:
+      ingest_endpoint: https://us.api.konghq.com/v3/openmeter/events
+      api_token: '${{ env "DECK_AUTH_TOKEN" }}'
+      meter_api_requests: true
+      meter_ai_token_usage: false
+      subject:
+        look_up_value_in: consumer
+
+consumers:
+  - username: payable-pilot-demo
+    keyauth_credentials:
+      - key: payable-pilot-demo-key

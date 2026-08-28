@@ -13,6 +13,7 @@
     "agent:offline": "tsx src/offline-agent.ts",
     "agentcore:build": "tsc -p tsconfig.agentcore.json",
     "agentcore:start": "node agentcore-dist/src/server.js",
+    "api:decision": "tsx src/server.ts",
     "build": "vinext build",
     "demo": "tsx src/demo.ts",
     "dev": "vinext dev",
