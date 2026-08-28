@@ -8,6 +8,8 @@ clean packets, and turns each exception into one concrete approval question.
 The included demo finds a two-unit overbill worth exactly $18.40 while clearing
 the packet whose purchase order, invoice, and receipt agree.
 
+![PayablePilot dashboard](docs/payable-pilot-dashboard.jpg)
+
 ## Why an agent
 
 This job is a sequence, not a chat. The agent finds pending work, chooses the

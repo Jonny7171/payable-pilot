@@ -4,19 +4,39 @@
   "private": true,
   "type": "module",
   "description": "A Strands agent that clears routine invoice packets and surfaces only payment exceptions.",
+  "engines": {
+    "node": ">=22.13.0"
+  },
   "scripts": {
     "agent": "tsx src/agent.ts",
-    "build": "tsc --noEmit",
+    "build": "vinext build",
     "demo": "tsx src/demo.ts",
-    "test": "tsx --test test/*.test.ts"
+    "dev": "vinext dev",
+    "start": "vinext start",
+    "test": "tsx --test test/*.test.ts",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@strands-agents/sdk": "^1.0.0",
+    "next": "16.2.6",
+    "react": "19.2.6",
+    "react-dom": "19.2.6",
     "zod": "^4.0.0"
   },
   "devDependencies": {
-    "@types/node": "^24.0.0",
+    "@cloudflare/vite-plugin": "1.37.1",
+    "@cloudflare/workers-types": "4.20260515.1",
+    "@openai/sites-vite-plugin": "^0.2.0",
+    "@types/node": "22.19.19",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "6.0.2",
+    "@vitejs/plugin-rsc": "0.5.26",
+    "react-server-dom-webpack": "19.2.6",
     "tsx": "^4.20.0",
-    "typescript": "^5.9.0"
+    "typescript": "5.9.3",
+    "vinext": "1.0.0-beta.3",
+    "vite": "8.0.13",
+    "wrangler": "4.92.0"
   }
 }
