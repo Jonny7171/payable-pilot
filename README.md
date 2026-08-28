@@ -3,6 +3,8 @@
 PayablePilot is a Strands agent that handles the routine side of accounts
 payable and interrupts a person only when money or judgment is at stake.
 
+Try the live product: https://payable-pilot.hdjskndf.chatgpt.site
+
 It watches new invoice packets, runs deterministic three-way matching, clears
 clean packets, and turns each exception into one concrete approval question.
 The included demo finds a two-unit overbill worth exactly $18.40 while clearing
