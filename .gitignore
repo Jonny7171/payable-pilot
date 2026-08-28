@@ -2,6 +2,7 @@ node_modules/
 dist/
 agentcore-dist/
 .next/
+out/
 .wrangler/
 .env
 .DS_Store
