@@ -7,11 +7,13 @@ type Decision = "credit" | "override" | null;
 export default function Home() {
   const [decision, setDecision] = useState<Decision>(null);
   const [nebiusMode, setNebiusMode] = useState(false);
+  const [serpApiMode, setSerpApiMode] = useState(false);
   const requestedCredit = decision === "credit";
 
   useEffect(() => {
     const engine = new URLSearchParams(window.location.search).get("engine");
     setNebiusMode(engine === "nebius");
+    setSerpApiMode(engine === "serpapi");
   }, []);
 
   return (
@@ -22,7 +24,7 @@ export default function Home() {
           <span>PayablePilot</span>
         </a>
         <div className="topbar-right">
-          <span className="live-dot"><i /> {nebiusMode ? "Nemotron on Nebius" : "Agent watching"}</span>
+          <span className="live-dot"><i /> {nebiusMode ? "Nemotron on Nebius" : serpApiMode ? "SerpApi live search" : "Agent watching"}</span>
           <span className="avatar" aria-label="Signed in as Jonathan">JG</span>
         </div>
       </header>
@@ -49,8 +51,8 @@ export default function Home() {
           <article><span>Cleared quietly</span><strong>1</strong></article>
           <article><span>Needs a decision</span><strong className="warn">{decision ? 0 : 1}</strong></article>
           <article>
-            <span>{nebiusMode ? "Reasoning model" : "Agent runtime"}</span>
-            <strong className="runtime">{nebiusMode ? "Nemotron 3 Super" : "Strands"}</strong>
+            <span>{nebiusMode ? "Reasoning model" : serpApiMode ? "Live data" : "Agent runtime"}</span>
+            <strong className="runtime">{nebiusMode ? "Nemotron 3 Super" : serpApiMode ? "SerpApi" : "Strands"}</strong>
           </article>
         </section>
 
@@ -74,7 +76,7 @@ export default function Home() {
               </li>
               <li className="alert">
                 <span className="timeline-icon">3</span>
-                <div><strong>Stopped PP-1042</strong><p>Invoice quantity exceeds both ordered and received quantity.</p><code>inspect_invoice_packet</code></div>
+                <div><strong>Stopped PP-1042</strong><p>{serpApiMode ? "The quantity variance triggered a live supplier research check." : "Invoice quantity exceeds both ordered and received quantity."}</p><code>{serpApiMode ? "research_supplier_risk" : "inspect_invoice_packet"}</code></div>
                 <time>09:41:06</time>
               </li>
               <li className={decision ? "done" : "waiting"}>
@@ -101,6 +103,14 @@ export default function Home() {
             </div>
             <h2>{decision ? (requestedCredit ? "Invoice held. Credit request queued." : "Override recorded. Invoice released.") : "Hold INV-44318 and request an $18.40 credit?"}</h2>
             <p className="supplier">Northstar Safety Supply · PO-7719</p>
+
+            {serpApiMode && (
+              <div className="supplier-check">
+                <span>Live supplier intelligence</span>
+                <strong>SerpApi sources attached</strong>
+                <p>Identity matches and current adverse-news results are kept with the review record.</p>
+              </div>
+            )}
 
             <div className="evidence-grid">
               <div><span>Ordered</span><strong>10</strong></div>
@@ -129,7 +139,7 @@ export default function Home() {
 
         <footer>
           <div><span className="footer-mark">P</span> PayablePilot</div>
-          <p>{nebiusMode ? "Nebius Token Factory. Deterministic money. Human authority." : "Agentic orchestration. Deterministic money. Human authority."}</p>
+          <p>{nebiusMode ? "Nebius Token Factory. Deterministic money. Human authority." : serpApiMode ? "SerpApi live data. Deterministic money. Human authority." : "Agentic orchestration. Deterministic money. Human authority."}</p>
         </footer>
       </main>
     </div>

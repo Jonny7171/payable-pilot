@@ -8,6 +8,9 @@ Try the public demo: https://jonny7171.github.io/payable-pilot/
 Try the Nebius + NVIDIA mode:
 https://jonny7171.github.io/payable-pilot/?engine=nebius
 
+Try the SerpApi supplier-intelligence mode:
+https://jonny7171.github.io/payable-pilot/?engine=serpapi
+
 Watch the 50-second live demo: https://youtu.be/fX2tumerpts
 
 It watches new invoice packets, runs deterministic three-way matching, clears
@@ -91,6 +94,22 @@ The default endpoint and model are:
 - `nvidia/nemotron-3-super-120b-a12b`
 
 No payment method or Nebius credential is stored in this repository.
+
+## Add live supplier intelligence with SerpApi
+
+When `SERPAPI_API_KEY` is present, PayablePilot adds a guarded
+`research_supplier_risk` tool. Exception packets trigger two structured Google
+searches through SerpApi: one for supplier identity evidence and one for current
+adverse news. The tool returns source links and search IDs. It can report an
+identity as unverified, but it never invents a fraud label or risk score.
+
+```bash
+SERPAPI_API_KEY=your_key pnpm vendor:intel PP-1042
+```
+
+The agent uses this live context before asking a person to decide what happens
+to the invoice. Clean packets still clear from deterministic document evidence
+without spending a search.
 
 ## Safety boundary
 

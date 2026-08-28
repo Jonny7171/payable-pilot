@@ -2,6 +2,7 @@ import { tool } from "@strands-agents/sdk";
 import { z } from "zod";
 import { inspectPacket } from "./domain.js";
 import type { PacketStore } from "./store.js";
+import { researchVendor } from "./vendor-intel.js";
 
 export function createPacketTools(store: PacketStore) {
   const listPendingPackets = tool({
@@ -53,10 +54,25 @@ export function createPacketTools(store: PacketStore) {
     },
   });
 
-  return [
-    listPendingPackets,
-    inspectInvoicePacket,
-    clearCleanPacket,
-    queueHumanReview,
-  ];
+  const researchSupplierRisk = tool({
+    name: "research_supplier_risk",
+    description:
+      "Use live SerpApi search data to verify the supplier identity and return current adverse-news evidence. This tool reports sources and never labels a supplier as fraudulent.",
+    inputSchema: z.object({ packetId: z.string() }),
+    callback: async ({ packetId }) => {
+      const supplier = store.get(packetId).invoice.supplier;
+      return researchVendor(supplier);
+    },
+  });
+
+  if (process.env.SERPAPI_API_KEY) {
+    return [
+      listPendingPackets,
+      inspectInvoicePacket,
+      clearCleanPacket,
+      researchSupplierRisk,
+      queueHumanReview,
+    ];
+  }
+  return [listPendingPackets, inspectInvoicePacket, clearCleanPacket, queueHumanReview];
 }

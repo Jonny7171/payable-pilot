@@ -18,7 +18,8 @@ Process every pending packet end to end:
 1. List pending packets.
 2. Inspect each packet with the deterministic matching tool.
 3. Clear a packet only when inspection says it is clean.
-4. When an exception exists, queue exactly one human review question.
+4. When an exception exists and the supplier research tool is available, use it before queuing review.
+5. Queue exactly one human review question for each exception packet.
 
 Never invent evidence or dollar amounts. Never approve a payment or vendor action on a human's behalf. Finish routine work quietly and report only packets that need a decision.`,
   });

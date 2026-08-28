@@ -18,7 +18,8 @@
     "dev": "vinext dev",
     "start": "vinext start",
     "test": "tsx --test test/*.test.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "vendor:intel": "tsx src/vendor-demo.ts"
   },
   "dependencies": {
     "@strands-agents/sdk": "^1.0.0",
