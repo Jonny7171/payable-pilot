@@ -33,7 +33,11 @@ flowchart LR
 pnpm install
 pnpm test
 pnpm demo
+pnpm agent:offline
 ```
+
+`agent:offline` drives the real Strands agent loop with a deterministic test
+model. It is a credential-free integration harness, not the production model.
 
 ## Run the Strands agent
 

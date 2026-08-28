@@ -9,6 +9,7 @@
   },
   "scripts": {
     "agent": "tsx src/agent.ts",
+    "agent:offline": "tsx src/offline-agent.ts",
     "build": "vinext build",
     "demo": "tsx src/demo.ts",
     "dev": "vinext dev",
