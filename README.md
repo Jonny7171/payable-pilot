@@ -5,7 +5,7 @@ payable and interrupts a person only when money or judgment is at stake.
 
 Try the public demo: https://jonny7171.github.io/payable-pilot/
 
-Watch the 50-second demo: https://youtu.be/1aVYRAmtxaM
+Watch the 50-second live demo: https://youtu.be/fX2tumerpts
 
 It watches new invoice packets, runs deterministic three-way matching, clears
 clean packets, and turns each exception into one concrete approval question.

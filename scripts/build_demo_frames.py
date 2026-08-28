@@ -50,14 +50,14 @@ def intro() -> Image.Image:
     return image
 
 
-def product_scene(step: str, title: str, caption: str, crop: bool = False) -> Image.Image:
+def product_scene(asset_name: str, step: str, title: str, caption: str, crop: bool = False) -> Image.Image:
     image = Image.new("RGB", SIZE, CREAM)
     draw = ImageDraw.Draw(image)
     draw.text((70, 28), "PayablePilot", font=font(38, bold=True), fill=INK)
     draw.text((70, 76), title, font=font(25), fill=MUTED)
     pill(draw, step, 1850, 35, CORAL if crop else MINT)
 
-    source = Image.open(DOCS / "payable-pilot-dashboard.jpg").convert("RGB")
+    source = Image.open(DOCS / asset_name).convert("RGB")
     if crop:
         source = source.crop(
             (
@@ -108,14 +108,16 @@ def main() -> None:
     scenes = [
         intro(),
         product_scene(
+            "live-before.jpg",
             "01  AGENT RUN",
             "The agent works the queue",
             "PP-1043 clears quietly. PP-1042 stops before an $18.40 overpayment.",
         ),
         product_scene(
-            "02  EXCEPTION EVIDENCE",
-            "One exact question reaches a person",
-            "10 ordered. 12 invoiced. 10 received. Two extra units at $9.20 each.",
+            "live-after.jpg",
+            "02  LIVE RESULT",
+            "The human decision changes the record",
+            "One click: decision count 1 to 0. Invoice held. Audit event recorded.",
             crop=True,
         ),
         architecture_scene(),
