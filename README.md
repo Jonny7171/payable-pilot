@@ -18,6 +18,8 @@ All document facts and money calculations come from deterministic code.
 
 ## Architecture
 
+![PayablePilot architecture](docs/architecture.svg)
+
 ```mermaid
 flowchart LR
   A[New invoice packets] --> B[Strands agent]
@@ -46,6 +48,14 @@ Configure AWS credentials with Bedrock model access, then:
 ```bash
 cp .env.example .env
 pnpm agent
+```
+
+The repository also includes an AgentCore-compatible HTTP runtime with `/ping`
+and `/invocations` endpoints:
+
+```bash
+pnpm agentcore:build
+pnpm agentcore:start
 ```
 
 The Strands agent uses these custom tools:
