@@ -5,6 +5,9 @@ payable and interrupts a person only when money or judgment is at stake.
 
 Try the public demo: https://jonny7171.github.io/payable-pilot/
 
+Try the Nebius + NVIDIA mode:
+https://jonny7171.github.io/payable-pilot/?engine=nebius
+
 Watch the 50-second live demo: https://youtu.be/fX2tumerpts
 
 It watches new invoice packets, runs deterministic three-way matching, clears
@@ -68,6 +71,26 @@ The Strands agent uses these custom tools:
 - `inspect_invoice_packet`
 - `clear_clean_packet`
 - `queue_human_review`
+
+## Run with NVIDIA Nemotron on Nebius
+
+PayablePilot can use NVIDIA Nemotron 3 Super through the OpenAI-compatible
+Nebius Token Factory API while keeping the same Strands tool loop and human
+approval boundary. The API key stays on the server. The default output cap is
+900 tokens so a test run cannot produce an unbounded response.
+
+```bash
+cp .env.example .env
+# Add NEBIUS_API_KEY to .env, then load it into your shell.
+pnpm agent:nebius
+```
+
+The default endpoint and model are:
+
+- `https://api.tokenfactory.us-central1.nebius.com/v1/`
+- `nvidia/nemotron-3-super-120b-a12b`
+
+No payment method or Nebius credential is stored in this repository.
 
 ## Safety boundary
 

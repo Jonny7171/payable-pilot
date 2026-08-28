@@ -1,16 +1,11 @@
 import { Agent } from "@strands-agents/sdk";
-import { BedrockModel } from "@strands-agents/sdk/models/bedrock";
+import { createPayableModel, selectedModelProvider } from "./model.js";
 import { createStore } from "./workflow.js";
 import { createPacketTools } from "./tools.js";
 
 export function createPayableAgent() {
   const store = createStore();
-  const model = new BedrockModel({
-    modelId:
-      process.env.BEDROCK_MODEL_ID ?? "global.anthropic.claude-sonnet-4-6",
-    region: process.env.AWS_REGION ?? "us-east-1",
-    temperature: 0,
-  });
+  const model = createPayableModel();
 
   const agent = new Agent({
     name: "PayablePilot",
@@ -36,6 +31,7 @@ async function main() {
   const result = await agent.invoke(
     "Process all pending invoice packets. Return a compact exception report.",
   );
+  console.log(`Model provider: ${selectedModelProvider()}`);
   console.log(result.lastMessage);
   console.log(JSON.stringify({ pendingReviews: store.pendingReviews() }, null, 2));
 }

@@ -9,6 +9,7 @@
   },
   "scripts": {
     "agent": "tsx src/agent.ts",
+    "agent:nebius": "PAYABLE_MODEL_PROVIDER=nebius tsx src/agent.ts",
     "agent:offline": "tsx src/offline-agent.ts",
     "agentcore:build": "tsc -p tsconfig.agentcore.json",
     "agentcore:start": "node agentcore-dist/src/server.js",
@@ -22,6 +23,8 @@
   "dependencies": {
     "@strands-agents/sdk": "^1.0.0",
     "next": "16.2.6",
+    "openai": "^6.49.0",
+    "openai": "^6.49.0",
     "react": "19.2.6",
     "react-dom": "19.2.6",
     "zod": "^4.0.0"

@@ -1,12 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Decision = "credit" | "override" | null;
 
 export default function Home() {
   const [decision, setDecision] = useState<Decision>(null);
+  const [nebiusMode, setNebiusMode] = useState(false);
   const requestedCredit = decision === "credit";
+
+  useEffect(() => {
+    const engine = new URLSearchParams(window.location.search).get("engine");
+    setNebiusMode(engine === "nebius");
+  }, []);
 
   return (
     <div className="shell">
@@ -16,7 +22,7 @@ export default function Home() {
           <span>PayablePilot</span>
         </a>
         <div className="topbar-right">
-          <span className="live-dot"><i /> Agent watching</span>
+          <span className="live-dot"><i /> {nebiusMode ? "Nemotron on Nebius" : "Agent watching"}</span>
           <span className="avatar" aria-label="Signed in as Jonathan">JG</span>
         </div>
       </header>
@@ -42,7 +48,10 @@ export default function Home() {
           <article><span>Packets found</span><strong>2</strong></article>
           <article><span>Cleared quietly</span><strong>1</strong></article>
           <article><span>Needs a decision</span><strong className="warn">{decision ? 0 : 1}</strong></article>
-          <article><span>Agent runtime</span><strong className="runtime">Strands</strong></article>
+          <article>
+            <span>{nebiusMode ? "Reasoning model" : "Agent runtime"}</span>
+            <strong className="runtime">{nebiusMode ? "Nemotron 3 Super" : "Strands"}</strong>
+          </article>
         </section>
 
         <section className="workspace">
@@ -55,7 +64,7 @@ export default function Home() {
             <ol className="timeline">
               <li className="done">
                 <span className="timeline-icon">1</span>
-                <div><strong>Found 2 new packets</strong><p>Read the pending invoice queue.</p><code>list_pending_packets</code></div>
+                <div><strong>Found 2 new packets</strong><p>{nebiusMode ? "Nemotron on Nebius read the queue through a guarded tool." : "Read the pending invoice queue."}</p><code>list_pending_packets</code></div>
                 <time>09:41:02</time>
               </li>
               <li className="done">
@@ -120,7 +129,7 @@ export default function Home() {
 
         <footer>
           <div><span className="footer-mark">P</span> PayablePilot</div>
-          <p>Agentic orchestration. Deterministic money. Human authority.</p>
+          <p>{nebiusMode ? "Nebius Token Factory. Deterministic money. Human authority." : "Agentic orchestration. Deterministic money. Human authority."}</p>
         </footer>
       </main>
     </div>
