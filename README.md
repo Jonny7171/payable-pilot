@@ -5,6 +5,8 @@ payable and interrupts a person only when money or judgment is at stake.
 
 Try the public demo: https://jonny7171.github.io/payable-pilot/
 
+Watch the 50-second demo: https://youtu.be/1aVYRAmtxaM
+
 It watches new invoice packets, runs deterministic three-way matching, clears
 clean packets, and turns each exception into one concrete approval question.
 The included demo finds a two-unit overbill worth exactly $18.40 while clearing
