@@ -9,7 +9,7 @@ let outputURL = root.appendingPathComponent("output/devpost/payable-pilot-demo.m
 let frameRate: Int32 = 30
 let width = 1920
 let height = 1080
-let durations = [6, 12, 12, 12, 8]
+let durations = [6, 12, 12, 10, 8]
 
 try? FileManager.default.removeItem(at: outputURL)
 

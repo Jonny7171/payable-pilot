@@ -9,97 +9,102 @@ FRAME_DIR = ROOT / "output" / "devpost" / "video-frames"
 SIZE = (1920, 1080)
 
 INK = "#17201D"
-CREAM = "#F4F0E7"
-MINT = "#B8F2D0"
-CORAL = "#F3A586"
-BLUE = "#B8C8F2"
+PAPER = "#F4F2EC"
+FOREST = "#284638"
+AMBER = "#B97827"
+RULE = "#C9CCC5"
 MUTED = "#66716C"
 
 FONT_REGULAR = "/System/Library/Fonts/Supplemental/Arial.ttf"
 FONT_BOLD = "/System/Library/Fonts/Supplemental/Arial Bold.ttf"
+FONT_MONO = "/System/Library/Fonts/Supplemental/Courier New.ttf"
 
 
-def font(size: int, bold: bool = False) -> ImageFont.FreeTypeFont:
-    return ImageFont.truetype(FONT_BOLD if bold else FONT_REGULAR, size)
+def font(size: int, bold: bool = False, mono: bool = False) -> ImageFont.FreeTypeFont:
+    path = FONT_MONO if mono else (FONT_BOLD if bold else FONT_REGULAR)
+    return ImageFont.truetype(path, size)
 
 
-def centered(draw: ImageDraw.ImageDraw, text: str, y: int, style: ImageFont.FreeTypeFont, fill: str) -> None:
-    box = draw.textbbox((0, 0), text, font=style)
-    draw.text(((SIZE[0] - box[2] + box[0]) // 2, y), text, font=style, fill=fill)
-
-
-def pill(draw: ImageDraw.ImageDraw, text: str, x: int, y: int, color: str) -> None:
-    style = font(25, bold=True)
-    box = draw.textbbox((0, 0), text, font=style)
-    width = box[2] - box[0] + 42
-    draw.rounded_rectangle((x - width, y, x, y + 48), radius=24, fill=color)
-    draw.text((x - width + 21, y + 9), text, font=style, fill=INK)
+def header(draw: ImageDraw.ImageDraw, step: str, note: str) -> None:
+    draw.text((76, 48), "PayablePilot", font=font(38, bold=True), fill=INK)
+    draw.text((76, 98), note, font=font(24), fill=MUTED)
+    draw.text((1804, 58), step, anchor="ra", font=font(23, mono=True), fill=MUTED)
+    draw.line((76, 140, 1844, 140), fill=RULE, width=2)
 
 
 def intro() -> Image.Image:
-    image = Image.new("RGB", SIZE, CREAM)
+    image = Image.new("RGB", SIZE, PAPER)
     draw = ImageDraw.Draw(image)
-    draw.rounded_rectangle((110, 95, 1810, 985), radius=46, fill=INK)
-    draw.rounded_rectangle((158, 143, 275, 260), radius=26, fill=MINT)
-    draw.text((191, 154), "P", font=font(78, bold=True), fill=INK)
-    centered(draw, "PayablePilot", 320, font(124, bold=True), CREAM)
-    centered(draw, "Two packets processed. One needs review.", 485, font(46), CREAM)
-    draw.rounded_rectangle((665, 625, 1255, 705), radius=40, fill=MINT)
-    centered(draw, "STRANDS AGENT", 646, font(31, bold=True), INK)
-    centered(draw, "Accounts payable exception desk", 790, font(31), "#CAD3CE")
+    draw.text((112, 90), "PayablePilot", font=font(42, bold=True), fill=FOREST)
+    draw.text((112, 158), "AGENT RUN / PP-2086", font=font(24, mono=True), fill=MUTED)
+    draw.line((112, 215, 1808, 215), fill=INK, width=3)
+    draw.text((112, 270), "One price exception. One reviewer decision.", font=font(66, bold=True), fill=INK)
+
+    rows = [
+        ("SUPPLIER", "Everett Workplace Systems"),
+        ("PO / INVOICE", "$94.00 / $119.00 per unit"),
+        ("QUANTITY", "8 dual monitor arms"),
+        ("HELD FROM PAYMENT", "$200.00"),
+    ]
+    top = 430
+    for index, (label, value) in enumerate(rows):
+        y = top + index * 120
+        draw.line((112, y, 1808, y), fill=RULE, width=2)
+        draw.text((112, y + 32), label, font=font(22, mono=True), fill=MUTED)
+        draw.text((580, y + 24), value, font=font(35, bold=True), fill=AMBER if index == 3 else INK)
+    draw.line((112, top + len(rows) * 120, 1808, top + len(rows) * 120), fill=RULE, width=2)
     return image
 
 
-def product_scene(asset_name: str, step: str, title: str, caption: str, crop: bool = False) -> Image.Image:
-    image = Image.new("RGB", SIZE, CREAM)
+def product_scene(asset_name: str, step: str, note: str, caption: str) -> Image.Image:
+    image = Image.new("RGB", SIZE, PAPER)
     draw = ImageDraw.Draw(image)
-    draw.text((70, 28), "PayablePilot", font=font(38, bold=True), fill=INK)
-    draw.text((70, 76), title, font=font(25), fill=MUTED)
-    pill(draw, step, 1850, 35, CORAL if crop else MINT)
-
+    header(draw, step, note)
     source = Image.open(DOCS / asset_name).convert("RGB")
-    if crop:
-        source = source.crop(
-            (
-                int(source.width * 0.44),
-                int(source.height * 0.40),
-                int(source.width * 0.96),
-                int(source.height * 0.92),
-            )
-        )
-    fitted = ImageOps.contain(source, (1680, 830), Image.Resampling.LANCZOS)
+    fitted = ImageOps.contain(source, (1760, 820), Image.Resampling.LANCZOS)
     x = (SIZE[0] - fitted.width) // 2
-    y = 135 + (830 - fitted.height) // 2
-    draw.rounded_rectangle((x - 8, y - 8, x + fitted.width + 8, y + fitted.height + 8), radius=20, fill="#D5D0C5")
+    y = 165 + (820 - fitted.height) // 2
+    draw.rectangle((x - 2, y - 2, x + fitted.width + 2, y + fitted.height + 2), outline=RULE, width=2)
     image.paste(fitted, (x, y))
-    centered(draw, caption, 1005, font(29, bold=True), INK)
+    draw.text((76, 1016), caption, font=font(27, bold=True), fill=INK)
     return image
 
 
 def architecture_scene() -> Image.Image:
-    image = Image.new("RGB", SIZE, CREAM)
+    image = Image.new("RGB", SIZE, PAPER)
     draw = ImageDraw.Draw(image)
-    draw.text((70, 28), "PayablePilot", font=font(38, bold=True), fill=INK)
-    draw.text((70, 76), "The model controls sequence. Code controls money.", font=font(25), fill=MUTED)
-    pill(draw, "03  CONTROLLED AGENT", 1850, 35, BLUE)
+    header(draw, "04 / 05", "The agent selects tools. Code verifies the amount.")
     source = Image.open(DOCS / "architecture.png").convert("RGB")
-    fitted = ImageOps.contain(source, (1670, 830), Image.Resampling.LANCZOS)
+    fitted = ImageOps.contain(source, (1700, 800), Image.Resampling.LANCZOS)
     x = (SIZE[0] - fitted.width) // 2
-    y = 138 + (830 - fitted.height) // 2
+    y = 185 + (800 - fitted.height) // 2
     image.paste(fitted, (x, y))
-    centered(draw, "Strands chooses tools. Deterministic checks own every financial fact.", 1005, font(29, bold=True), INK)
+    draw.text((76, 1016), "Four explicit tools make the run inspectable and keep financial math deterministic.", font=font(27, bold=True), fill=INK)
     return image
 
 
-def outro() -> Image.Image:
-    image = Image.new("RGB", SIZE, INK)
+def source_scene() -> Image.Image:
+    image = Image.new("RGB", SIZE, PAPER)
     draw = ImageDraw.Draw(image)
-    centered(draw, "The useful work gets done.", 245, font(82, bold=True), CREAM)
-    centered(draw, "The decision stays human.", 350, font(82, bold=True), MINT)
-    draw.rounded_rectangle((480, 550, 1440, 655), radius=52, fill=MINT)
-    centered(draw, "jonny7171.github.io/payable-pilot", 579, font(35, bold=True), INK)
-    centered(draw, "Built with Strands Agents SDK", 755, font(34, bold=True), CORAL)
-    centered(draw, "Source: github.com/Jonny7171/payable-pilot", 815, font(28), "#B8C2BC")
+    header(draw, "05 / 05", "The public demo replays the included fixture")
+    rows = [
+        ("AGENT", "Strands Agents SDK"),
+        ("TOOLS", "list / inspect / hold / clear"),
+        ("TESTS", "10 passing tests cover the agent, domain checks, and server"),
+        ("FIXTURE", "PP-2086 and PP-2087 are included in the repository"),
+    ]
+    top = 250
+    for index, (label, value) in enumerate(rows):
+        y = top + index * 142
+        draw.line((92, y, 1828, y), fill=RULE, width=2)
+        draw.text((112, y + 40), f"0{index + 1}", font=font(23, mono=True), fill=FOREST)
+        draw.text((220, y + 40), label, font=font(27, bold=True), fill=INK)
+        draw.text((570, y + 37), value, font=font(29), fill=INK)
+    draw.line((92, top + len(rows) * 142, 1828, top + len(rows) * 142), fill=RULE, width=2)
+    draw.text((112, 900), "LIVE", font=font(20, mono=True), fill=MUTED)
+    draw.text((300, 894), "jonny7171.github.io/payable-pilot", font=font(29, bold=True), fill=INK)
+    draw.text((112, 970), "SOURCE", font=font(20, mono=True), fill=MUTED)
+    draw.text((300, 964), "github.com/Jonny7171/payable-pilot", font=font(29, bold=True), fill=INK)
     return image
 
 
@@ -109,19 +114,18 @@ def main() -> None:
         intro(),
         product_scene(
             "live-before.jpg",
-            "01  AGENT RUN",
-            "The agent works the queue",
-            "PP-2087 clears. PP-2086 stops on a verified $200.00 price difference.",
+            "02 / 05",
+            "The agent cleared PP-2087 and held PP-2086",
+            "The four tool calls, source references, and $200.00 difference are visible together.",
         ),
         product_scene(
             "live-after.jpg",
-            "02  LIVE RESULT",
-            "The human decision changes the record",
-            "One click: decision count 1 to 0. Invoice held. Audit event recorded.",
-            crop=True,
+            "03 / 05",
+            "The reviewer approved the credit request and hold",
+            "The pending count drops to zero and the decision becomes the fourth recorded event.",
         ),
         architecture_scene(),
-        outro(),
+        source_scene(),
     ]
     for index, scene in enumerate(scenes, start=1):
         scene.save(FRAME_DIR / f"scene-{index}.png", optimize=True)
