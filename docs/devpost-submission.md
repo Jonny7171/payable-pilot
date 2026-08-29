@@ -54,4 +54,4 @@ The useful part of the agent is not financial improvisation. It is choosing the 
 - Screenshot: `docs/live-before.jpg`
 - Resolved state: `docs/live-after.jpg`
 - Architecture: `docs/architecture.png`
-- Demo video: replace after uploading `output/devpost/payable-pilot-demo.mp4`
+- Demo video: https://youtu.be/szxQIb9EidQ

@@ -12,7 +12,7 @@ https://jonny7171.github.io/payable-pilot/?engine=nebius
 Try the SerpApi supplier-intelligence mode:
 https://jonny7171.github.io/payable-pilot/?engine=serpapi
 
-Watch the 50-second live demo: https://youtu.be/fX2tumerpts
+Watch the 48-second walkthrough: https://youtu.be/szxQIb9EidQ
 
 The included run processes two fictional packets. It clears the packet whose
 purchase order, invoice, and receipt agree. It holds the other because eight
