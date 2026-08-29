@@ -43,7 +43,7 @@ def intro() -> Image.Image:
     draw.rounded_rectangle((158, 143, 275, 260), radius=26, fill=MINT)
     draw.text((191, 154), "P", font=font(78, bold=True), fill=INK)
     centered(draw, "PayablePilot", 320, font(124, bold=True), CREAM)
-    centered(draw, "Routine packets cleared. One decision needs you.", 485, font(46), CREAM)
+    centered(draw, "Two packets processed. One needs review.", 485, font(46), CREAM)
     draw.rounded_rectangle((665, 625, 1255, 705), radius=40, fill=MINT)
     centered(draw, "STRANDS AGENT", 646, font(31, bold=True), INK)
     centered(draw, "Accounts payable exception desk", 790, font(31), "#CAD3CE")
@@ -111,7 +111,7 @@ def main() -> None:
             "live-before.jpg",
             "01  AGENT RUN",
             "The agent works the queue",
-            "PP-1043 clears quietly. PP-1042 stops before an $18.40 overpayment.",
+            "PP-2087 clears. PP-2086 stops on a verified $200.00 price difference.",
         ),
         product_scene(
             "live-after.jpg",

@@ -1,7 +1,8 @@
 # PayablePilot
 
-PayablePilot is a Strands agent that handles the routine side of accounts
-payable and interrupts a person only when money or judgment is at stake.
+PayablePilot runs an accounts payable queue through a Strands agent. The agent
+opens each packet, calls the matching tools, clears the packet that agrees, and
+puts the exception in a review queue.
 
 Try the public demo: https://jonny7171.github.io/payable-pilot/
 
@@ -13,18 +14,24 @@ https://jonny7171.github.io/payable-pilot/?engine=serpapi
 
 Watch the 50-second live demo: https://youtu.be/fX2tumerpts
 
-It watches new invoice packets, runs deterministic three-way matching, clears
-clean packets, and turns each exception into one concrete approval question.
-The included demo finds a two-unit overbill worth exactly $18.40 while clearing
-the packet whose purchase order, invoice, and receipt agree.
+The included run processes two fictional packets. It clears the packet whose
+purchase order, invoice, and receipt agree. It holds the other because eight
+monitor arms were invoiced at $119 each instead of the $94 purchase-order rate.
+The resulting price difference is $200.
 
 ![PayablePilot dashboard](docs/payable-pilot-dashboard.jpg)
 
-## Why an agent
+## What the agent does
 
-This job is a sequence, not a chat. The agent finds pending work, chooses the
-right tool for each packet, completes safe work, and stops at a human boundary.
-All document facts and money calculations come from deterministic code.
+The work has several steps and the next step depends on what the packet contains.
+Strands chooses which tool to call. TypeScript performs the document comparison
+and arithmetic. The agent cannot approve an exception or change a calculated
+amount.
+
+The public page is a replay of the included fixture so the review state is easy
+to inspect without AWS credentials. The repository contains the executable
+Strands loop, an offline test model, the four workflow tools, and tests that
+verify the tool order and the $200 result.
 
 ## Architecture
 
@@ -110,7 +117,7 @@ adverse news. The tool returns source links and search IDs. It can report an
 identity as unverified, but it never invents a fraud label or risk score.
 
 ```bash
-SERPAPI_API_KEY=your_key pnpm vendor:intel PP-1042
+SERPAPI_API_KEY=your_key pnpm vendor:intel PP-2086
 ```
 
 The agent uses this live context before asking a person to decide what happens

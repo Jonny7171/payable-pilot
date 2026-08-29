@@ -6,15 +6,17 @@ import { createStore, processPacket } from "../src/workflow.js";
 
 const seed = packets as Packet[];
 
-test("calculates the independently verifiable invoice overage", () => {
+test("calculates the independently verifiable unit-price variance", () => {
   const result = inspectPacket(seed[0]!);
   assert.equal(result.clean, false);
-  assert.equal(result.totalImpact, 18.4);
+  assert.equal(result.totalImpact, 200);
+  assert.equal(result.exceptions[0]?.code, "UNIT_PRICE_VARIANCE");
   assert.deepEqual(result.exceptions[0]?.evidence, {
-    ordered: 10,
-    invoiced: 12,
-    received: 10,
-    unitPrice: 9.2,
+    ordered: 8,
+    invoiced: 8,
+    received: 8,
+    orderedUnitPrice: 94,
+    invoiceUnitPrice: 119,
   });
 });
 
@@ -27,13 +29,13 @@ test("clears a packet when all three documents agree", () => {
 
 test("routes only the exception to a person", () => {
   const store = createStore();
-  processPacket(store, "PP-1042");
-  processPacket(store, "PP-1043");
+  processPacket(store, "PP-2086");
+  processPacket(store, "PP-2087");
 
   assert.equal(store.list("cleared").length, 1);
   assert.equal(store.pendingReviews().length, 1);
   assert.equal(
     store.pendingReviews()[0]?.question,
-    "Hold INV-44318 and request a $18.40 credit?",
+    "Hold INV-25791 and request a $200.00 credit?",
   );
 });

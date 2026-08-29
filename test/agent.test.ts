@@ -15,9 +15,9 @@ test("executes the complete workflow through the Strands agent loop", async () =
 
   const result = await agent.invoke("Process every pending invoice packet.");
 
-  assert.deepEqual(store.list("cleared").map((packet) => packet.id), ["PP-1043"]);
+  assert.deepEqual(store.list("cleared").map((packet) => packet.id), ["PP-2087"]);
   assert.equal(store.pendingReviews().length, 1);
-  assert.equal(store.pendingReviews()[0]?.inspection.totalImpact, 18.4);
+  assert.equal(store.pendingReviews()[0]?.inspection.totalImpact, 200);
   assert.match(JSON.stringify(result.lastMessage.toJSON()), /needs one decision/);
 
   const toolCalls = agent.messages

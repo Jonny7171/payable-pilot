@@ -43,11 +43,16 @@ export interface Evidence {
   ordered: number;
   invoiced: number;
   received: number;
-  unitPrice: number;
+  orderedUnitPrice: number;
+  invoiceUnitPrice: number;
 }
 
 export interface Exception {
-  code: "SUPPLIER_MISMATCH" | "PO_REFERENCE_MISMATCH" | "QUANTITY_VARIANCE";
+  code:
+    | "SUPPLIER_MISMATCH"
+    | "PO_REFERENCE_MISMATCH"
+    | "QUANTITY_VARIANCE"
+    | "UNIT_PRICE_VARIANCE";
   sku?: string;
   summary: string;
   impact: number;
@@ -112,7 +117,25 @@ export function inspectPacket(packet: Packet): Inspection {
           ordered: orderedQuantity,
           invoiced: invoiced.quantity,
           received: receivedQuantity,
-          unitPrice: invoiced.unitPrice,
+          orderedUnitPrice: ordered?.unitPrice ?? 0,
+          invoiceUnitPrice: invoiced.unitPrice,
+        },
+      });
+    }
+
+    if (ordered && invoiced.unitPrice > ordered.unitPrice && payableQuantity > 0) {
+      const impact = money((invoiced.unitPrice - ordered.unitPrice) * payableQuantity);
+      exceptions.push({
+        code: "UNIT_PRICE_VARIANCE",
+        sku: invoiced.sku,
+        summary: `${invoiced.description}: invoice rate $${invoiced.unitPrice.toFixed(2)}, PO rate $${ordered.unitPrice.toFixed(2)}.`,
+        impact,
+        evidence: {
+          ordered: orderedQuantity,
+          invoiced: invoiced.quantity,
+          received: receivedQuantity,
+          orderedUnitPrice: ordered.unitPrice,
+          invoiceUnitPrice: invoiced.unitPrice,
         },
       });
     }

@@ -20,33 +20,38 @@ export default function Home() {
     <div className="shell">
       <header className="topbar">
         <a className="brand" href="#" aria-label="PayablePilot home">
-          <span className="brand-mark">P</span>
+          <span className="brand-mark">PP</span>
           <span>PayablePilot</span>
         </a>
+        <nav className="product-nav" aria-label="Product sections">
+          <a href="#queue">Queue</a>
+          <a href="#review">Review log</a>
+          <a href="#agent">Agent settings</a>
+        </nav>
         <div className="topbar-right">
-          <span className="live-dot"><i /> {nebiusMode ? "Nemotron on Nebius" : serpApiMode ? "SerpApi live search" : "Agent watching"}</span>
-          <span className="avatar" aria-label="Signed in as Jonathan">JG</span>
+          <span className="last-run">Last run 09:41:06</span>
+          <span className="live-dot"><i /> {nebiusMode ? "Nemotron on Nebius" : serpApiMode ? "SerpApi connected" : "Strands online"}</span>
         </div>
       </header>
 
       <main>
         <section className="hero">
           <div>
-            <p className="eyebrow">Invoice exception desk</p>
-            <h1>Routine packets cleared.<br />One decision needs you.</h1>
+            <p className="eyebrow">AP queue / August 29, 2026</p>
+            <h1>Two packets processed. One needs review.</h1>
             <p className="lede">
-              PayablePilot worked through the queue, verified the source records,
-              and stopped before an $18.40 overpayment.
+              The agent cleared one matched invoice and held INV-25791 after the
+              billed unit price did not match PO-8412.
             </p>
           </div>
           <div className="protected-card">
-            <span>Protected this run</span>
-            <strong>$18.40</strong>
-            <small>1 verified quantity variance</small>
+            <span>Held from payment</span>
+            <strong>$200.00</strong>
+            <small>8 units billed $25.00 above the PO rate</small>
           </div>
         </section>
 
-        <section className="stats" aria-label="Run summary">
+        <section className="stats" id="queue" aria-label="Run summary">
           <article><span>Packets found</span><strong>2</strong></article>
           <article><span>Cleared quietly</span><strong>1</strong></article>
           <article><span>Needs a decision</span><strong className="warn">{decision ? 0 : 1}</strong></article>
@@ -56,11 +61,11 @@ export default function Home() {
           </article>
         </section>
 
-        <section className="workspace">
+        <section className="workspace" id="review">
           <article className="panel activity-panel">
             <div className="panel-heading">
               <div><p className="eyebrow">Live run</p><h2>What the agent did</h2></div>
-              <span className="run-id">RUN 08-27-01</span>
+              <span className="run-id">RUN 08-29-01</span>
             </div>
 
             <ol className="timeline">
@@ -71,38 +76,38 @@ export default function Home() {
               </li>
               <li className="done">
                 <span className="timeline-icon">2</span>
-                <div><strong>Cleared PP-1043</strong><p>PO-7720, INV-90811, and GR-8822 agree.</p><code>clear_clean_packet</code></div>
+                <div><strong>Cleared PP-2087</strong><p>PO-8413, INV-61308, and GR-9135 agree.</p><code>clear_clean_packet</code></div>
                 <time>09:41:04</time>
               </li>
               <li className="alert">
                 <span className="timeline-icon">3</span>
-                <div><strong>Stopped PP-1042</strong><p>{serpApiMode ? "The quantity variance triggered a live supplier research check." : "Invoice quantity exceeds both ordered and received quantity."}</p><code>{serpApiMode ? "research_supplier_risk" : "inspect_invoice_packet"}</code></div>
+                <div><strong>Stopped PP-2086</strong><p>{serpApiMode ? "The price variance triggered a live supplier research check." : "Invoice rate is $25.00 above the purchase order rate."}</p><code>{serpApiMode ? "research_supplier_risk" : "inspect_invoice_packet"}</code></div>
                 <time>09:41:06</time>
               </li>
               <li className={decision ? "done" : "waiting"}>
                 <span className="timeline-icon">4</span>
                 <div>
                   <strong>{decision ? (requestedCredit ? "Credit request approved" : "Payment override approved") : "Waiting for your decision"}</strong>
-                  <p>{decision ? (requestedCredit ? "INV-44318 is on hold until the $18.40 credit is received." : "INV-44318 was released with the variance attached.") : "No payment or supplier action was taken."}</p>
+                  <p>{decision ? (requestedCredit ? "INV-25791 is on hold until the $200.00 credit is received." : "INV-25791 was released with the variance attached.") : "No payment or supplier action was taken."}</p>
                   <code>{decision ? "record_human_decision" : "queue_human_review"}</code>
                 </div>
                 <time>{decision ? "just now" : "now"}</time>
               </li>
             </ol>
 
-            <div className="guardrail">
-              <span>Human boundary</span>
-              <p>The agent can clear verified packets. It cannot approve an exception.</p>
+            <div className="guardrail" id="agent">
+              <span>Control</span>
+              <p>The agent may clear a matched packet. A person must approve any exception.</p>
             </div>
           </article>
 
           <aside className={`panel decision-panel${decision ? " resolved" : ""}`}>
             <div className="decision-topline">
               <span className="exception-badge">{decision ? "Decision recorded" : "Decision required"}</span>
-              <span className="packet-id">PP-1042</span>
+              <span className="packet-id">PP-2086</span>
             </div>
-            <h2>{decision ? (requestedCredit ? "Invoice held. Credit request queued." : "Override recorded. Invoice released.") : "Hold INV-44318 and request an $18.40 credit?"}</h2>
-            <p className="supplier">Northstar Safety Supply · PO-7719</p>
+            <h2>{decision ? (requestedCredit ? "Invoice held. Credit request queued." : "Override recorded. Invoice released.") : "Hold INV-25791 and request a $200.00 credit?"}</h2>
+            <p className="supplier">Everett Workplace Systems · PO-8412</p>
 
             {serpApiMode && (
               <div className="supplier-check">
@@ -113,18 +118,18 @@ export default function Home() {
             )}
 
             <div className="evidence-grid">
-              <div><span>Ordered</span><strong>10</strong></div>
-              <div className="bad"><span>Invoiced</span><strong>12</strong></div>
-              <div><span>Received</span><strong>10</strong></div>
-              <div><span>Unit price</span><strong>$9.20</strong></div>
+              <div><span>PO rate</span><strong>$94</strong></div>
+              <div className="bad"><span>Invoice rate</span><strong>$119</strong></div>
+              <div><span>Quantity</span><strong>8</strong></div>
+              <div><span>Difference</span><strong>$25</strong></div>
             </div>
 
-            <div className="math-row"><span>2 extra units × $9.20</span><strong>$18.40</strong></div>
+            <div className="math-row"><span>8 units × $25.00 rate difference</span><strong>$200.00</strong></div>
 
             <div className="source-list">
-              <div><i className="source-ok">✓</i><span>Purchase order</span><code>PO-7719</code></div>
-              <div><i className="source-bad">!</i><span>Supplier invoice</span><code>INV-44318</code></div>
-              <div><i className="source-ok">✓</i><span>Goods receipt</span><code>GR-8821</code></div>
+              <div><i className="source-ok">✓</i><span>Purchase order</span><code>PO-8412</code></div>
+              <div><i className="source-bad">!</i><span>Supplier invoice</span><code>INV-25791</code></div>
+              <div><i className="source-ok">✓</i><span>Goods receipt</span><code>GR-9134</code></div>
             </div>
 
             <div className="actions">
@@ -132,14 +137,14 @@ export default function Home() {
               <button className="secondary" onClick={() => setDecision("override")}>Pay anyway</button>
             </div>
             <p className="decision-note">
-              {decision ? "Audit record updated with Jonathan Gagnon's decision." : "Your choice is written to the audit record."}
+              {decision ? "The review record now includes this decision." : "No action is taken until a reviewer chooses."}
             </p>
           </aside>
         </section>
 
         <footer>
           <div><span className="footer-mark">P</span> PayablePilot</div>
-          <p>{nebiusMode ? "Nebius Token Factory. Deterministic money. Human authority." : serpApiMode ? "SerpApi live data. Deterministic money. Human authority." : "Agentic orchestration. Deterministic money. Human authority."}</p>
+          <p>{nebiusMode ? "Strands with Nemotron on Nebius" : serpApiMode ? "Strands with SerpApi supplier research" : "Strands agent run with four explicit tools"}</p>
         </footer>
       </main>
     </div>

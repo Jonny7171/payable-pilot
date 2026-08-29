@@ -17,10 +17,10 @@ interface ToolStep {
 
 const steps: ToolStep[] = [
   { name: "list_pending_packets", input: {} },
-  { name: "inspect_invoice_packet", input: { packetId: "PP-1042" } },
-  { name: "queue_human_review", input: { packetId: "PP-1042" } },
-  { name: "inspect_invoice_packet", input: { packetId: "PP-1043" } },
-  { name: "clear_clean_packet", input: { packetId: "PP-1043" } },
+  { name: "inspect_invoice_packet", input: { packetId: "PP-2086" } },
+  { name: "queue_human_review", input: { packetId: "PP-2086" } },
+  { name: "inspect_invoice_packet", input: { packetId: "PP-2087" } },
+  { name: "clear_clean_packet", input: { packetId: "PP-2087" } },
 ];
 
 /**
@@ -72,7 +72,7 @@ export class ScriptedPayableModel extends Model<ScriptedModelConfig> {
       type: "modelContentBlockDeltaEvent",
       delta: {
         type: "textDelta",
-        text: "Cleared PP-1043. PP-1042 needs one decision: hold INV-44318 and request an $18.40 credit.",
+        text: "Cleared PP-2087. PP-2086 needs one decision: hold INV-25791 and request a $200.00 credit.",
       },
     };
     yield { type: "modelContentBlockStopEvent" };

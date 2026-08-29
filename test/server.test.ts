@@ -22,7 +22,7 @@ test("serves a deterministic decision for Kong to meter", async () => {
     const response = await fetch(`${baseUrl}/v1/decisions`, {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ packetId: "PP-1042" }),
+      body: JSON.stringify({ packetId: "PP-2086" }),
     });
     const result = (await response.json()) as {
       decision: string;
@@ -33,7 +33,7 @@ test("serves a deterministic decision for Kong to meter", async () => {
     assert.equal(response.status, 200);
     assert.equal(result.decision, "REVIEW");
     assert.equal(result.requiresHuman, true);
-    assert.equal(result.inspection.totalImpact, 18.4);
+    assert.equal(result.inspection.totalImpact, 200);
   });
 });
 

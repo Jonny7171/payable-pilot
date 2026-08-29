@@ -22,7 +22,7 @@ The metered endpoint is `POST /v1/decisions`:
 
 ```json
 {
-  "packetId": "PP-1042"
+  "packetId": "PP-2086"
 }
 ```
 
@@ -54,6 +54,6 @@ customers receive generated credentials through Kong.
 The final recording should show four facts in one pass:
 
 1. A request without a key receives `401`.
-2. The demo Consumer receives the verified `$18.40` review decision.
+2. The demo Consumer receives the verified `$200.00` review decision.
 3. Kong attributes the request to that Consumer.
 4. Konnect Metering & Billing adds the request to the customer's usage.
