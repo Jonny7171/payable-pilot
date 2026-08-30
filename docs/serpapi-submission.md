@@ -21,10 +21,17 @@ IDs are kept with the review record.
 - No invoice is paid and no supplier is contacted without a person.
 - Clean packets do not spend search credits.
 
-## Submission checklist
+## Live proof completed August 30, 2026
 
-- Activate the existing free SerpApi account.
-- Run one real end-to-end supplier check.
-- Capture the live response and search IDs.
-- Record a two to four minute public demo.
-- Add the SerpApi challenge to the existing Devpost submission.
+- The real Strands loop called `research_supplier_risk` before escalating PP-2086.
+- SerpApi returned search IDs `6a9455d3a26f561ba156354a` and `6a9455d3a8dce6cfd2c9beba`.
+- The fictional supplier remained unverified and no adverse claim was made.
+- PP-2087 cleared and PP-2086 stayed behind the human approval boundary.
+- All 12 tests passed.
+- Public evidence: https://jonny7171.github.io/payable-pilot/proof/strands-serpapi-run.json
+
+## Still to do
+
+- Record a new public demo that shows the live supplier view and evidence file.
+- Update the existing Devpost story and media.
+- Add the SerpApi challenge if the submission form still permits it.

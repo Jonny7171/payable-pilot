@@ -12,15 +12,15 @@ Most invoice packets are routine, but someone still has to open them. I wanted t
 
 The included run has two fictional packets. PP-2087 clears because the purchase order, invoice, and receipt agree. PP-2086 stops because Everett Workplace Systems invoiced eight monitor arms at $119 each while the purchase order lists $94. The difference is $25 per unit and $200 in total.
 
-The agent calls four explicit tools to list the queue, inspect a packet, clear a match, or send an exception to review. The reviewer can request a credit and hold the invoice or choose to pay it anyway. The agent cannot make that choice.
+The agent works through six tool calls. It lists the queue, inspects both packets, checks the exception supplier with live SerpApi data, clears the clean packet, and sends the exception to a person. The reviewer can request a credit and hold the invoice or choose to pay it anyway. The agent cannot make that choice.
 
 ## How I built it
 
 I used the Strands Agents SDK for the agent loop and tool selection. A separate TypeScript domain layer reads the packet fixture, checks the three documents, and calculates the price difference. That separation matters: the agent controls the sequence, but code owns quantities, prices, and the final dollar amount.
 
-The repository also includes an AgentCore-compatible HTTP runtime, a deterministic offline model that exercises the real Strands loop without cloud credentials, and tests for the agent, financial checks, supplier evidence, and API response.
+The repository also includes an AgentCore-compatible HTTP runtime, a deterministic test model that exercises the real Strands loop without cloud credentials, and 12 tests for the agent, financial checks, supplier evidence, and API response.
 
-The public page replays the included fixture so judges can inspect both agent states without AWS credentials. It is not presented as a live accounting connection. The executable Strands loop and four tools are in the repository.
+The public page replays the included fixture so judges can inspect both agent states without AWS credentials. It is not presented as a live accounting connection. The SerpApi view is backed by a real run completed on August 30. The public evidence file includes the six-tool sequence, both search IDs, the verified $200 calculation, and a clear disclosure that the run used a deterministic test model rather than Bedrock or a live LLM.
 
 ## Challenges
 
@@ -32,9 +32,11 @@ I also separated this example from my document-verification project. PayablePilo
 
 - PP-2087 clears only after the three documents agree.
 - PP-2086 is held on a verified $200 unit-price difference.
-- Four explicit tool calls are visible in the run log.
+- Six tool calls are captured in the public run evidence.
+- The supplier check completed through SerpApi and returned two search IDs.
+- The fictional supplier remained unverified, so the agent made no adverse claim.
 - A person must make the exception decision.
-- Ten tests cover the agent loop, matching rules, server, and supplier-evidence guardrails.
+- Twelve tests cover the agent loop, matching rules, server, and supplier-evidence guardrails.
 
 ## What I learned
 
@@ -50,6 +52,8 @@ The useful part of the agent is not financial improvisation. It is choosing the 
 ## Submission fields
 
 - Public demo: https://jonny7171.github.io/payable-pilot/
+- Live supplier view: https://jonny7171.github.io/payable-pilot/?engine=serpapi
+- Run evidence: https://jonny7171.github.io/payable-pilot/proof/strands-serpapi-run.json
 - Source: https://github.com/Jonny7171/payable-pilot
 - Screenshot: `docs/live-before.jpg`
 - Resolved state: `docs/live-after.jpg`
