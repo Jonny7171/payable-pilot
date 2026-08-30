@@ -11,6 +11,7 @@
     "agent": "tsx src/agent.ts",
     "agent:nebius": "PAYABLE_MODEL_PROVIDER=nebius tsx src/agent.ts",
     "agent:offline": "tsx src/offline-agent.ts",
+    "agent:proof": "node --env-file=.env.local --import tsx src/offline-agent.ts",
     "agentcore:build": "tsc -p tsconfig.agentcore.json",
     "agentcore:start": "node agentcore-dist/src/server.js",
     "api:decision": "tsx src/server.ts",

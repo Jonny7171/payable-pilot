@@ -396,6 +396,8 @@ footer {
 
 footer div { display: flex; align-items: center; gap: 8px; color: #676474; font-weight: 760; }
 .footer-mark { width: 23px; height: 23px; border-radius: 7px; font-size: 10px; }
+.proof-link { color: var(--violet); font-weight: 760; text-decoration: none; }
+.proof-link:hover { text-decoration: underline; }
 
 .toast {
   position: fixed;

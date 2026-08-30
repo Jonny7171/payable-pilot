@@ -1,0 +1,46 @@
+{
+  "run": {
+    "completedAt": "2026-08-30T16:11:01.698Z",
+    "agentRuntime": "@strands-agents/sdk",
+    "model": "deterministic test model",
+    "liveDataProvider": "SerpApi",
+    "liveSupplierResearch": true
+  },
+  "disclosure": "This proves a real Strands tool loop and live SerpApi calls. It is not presented as a Bedrock, AgentCore, or live-LLM run.",
+  "toolCalls": [
+    "list_pending_packets",
+    "inspect_invoice_packet",
+    "research_supplier_risk",
+    "queue_human_review",
+    "inspect_invoice_packet",
+    "clear_clean_packet"
+  ],
+  "supplierResearch": {
+    "packetId": "PP-2086",
+    "supplier": "Everett Workplace Systems",
+    "provider": "SerpApi",
+    "status": "success",
+    "identity": "unverified",
+    "adverseNews": [],
+    "searchIds": [
+      "6a9455d3a26f561ba156354a",
+      "6a9455d3a8dce6cfd2c9beba"
+    ],
+    "checkedAt": "2026-08-30T16:11:01.694Z",
+    "interpretation": "The supplier is fictional. No matching source was found, so the agent made no adverse claim."
+  },
+  "decision": {
+    "cleared": ["PP-2087"],
+    "waitingForHuman": ["PP-2086"],
+    "exception": "UNIT_PRICE_VARIANCE",
+    "orderedUnitPrice": 94,
+    "invoiceUnitPrice": 119,
+    "quantity": 8,
+    "verifiedImpact": 200,
+    "proposedAction": "HOLD_AND_REQUEST_CREDIT"
+  },
+  "tests": {
+    "passed": 12,
+    "failed": 0
+  }
+}

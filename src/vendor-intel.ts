@@ -134,6 +134,17 @@ async function serpSearch(
     headers: { accept: "application/json" },
   });
   const body = (await response.json()) as SerpResponse;
+  if (
+    response.ok &&
+    body.error?.toLowerCase().includes("hasn't returned any results")
+  ) {
+    return {
+      ...body,
+      error: undefined,
+      organic_results: [],
+      news_results: [],
+    };
+  }
   if (!response.ok || body.error) {
     throw new Error(body.error ?? `SerpApi request failed with ${response.status}`);
   }

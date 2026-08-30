@@ -15,13 +15,29 @@ interface ToolStep {
   input: Record<string, string>;
 }
 
-const steps: ToolStep[] = [
-  { name: "list_pending_packets", input: {} },
-  { name: "inspect_invoice_packet", input: { packetId: "PP-2086" } },
-  { name: "queue_human_review", input: { packetId: "PP-2086" } },
-  { name: "inspect_invoice_packet", input: { packetId: "PP-2087" } },
-  { name: "clear_clean_packet", input: { packetId: "PP-2087" } },
-];
+interface ScriptedPayableModelOptions {
+  includeSupplierResearch?: boolean;
+}
+
+function buildSteps({
+  includeSupplierResearch = false,
+}: ScriptedPayableModelOptions): ToolStep[] {
+  return [
+    { name: "list_pending_packets", input: {} },
+    { name: "inspect_invoice_packet", input: { packetId: "PP-2086" } },
+    ...(includeSupplierResearch
+      ? [
+          {
+            name: "research_supplier_risk",
+            input: { packetId: "PP-2086" },
+          },
+        ]
+      : []),
+    { name: "queue_human_review", input: { packetId: "PP-2086" } },
+    { name: "inspect_invoice_packet", input: { packetId: "PP-2087" } },
+    { name: "clear_clean_packet", input: { packetId: "PP-2087" } },
+  ];
+}
 
 /**
  * A deterministic model used only to exercise the real Strands agent loop in
@@ -30,6 +46,12 @@ const steps: ToolStep[] = [
 export class ScriptedPayableModel extends Model<ScriptedModelConfig> {
   private config: ScriptedModelConfig = { modelId: "scripted-payable-demo" };
   private step = 0;
+  private readonly steps: ToolStep[];
+
+  constructor(options: ScriptedPayableModelOptions = {}) {
+    super();
+    this.steps = buildSteps(options);
+  }
 
   updateConfig(modelConfig: ScriptedModelConfig): void {
     this.config = { ...this.config, ...modelConfig };
@@ -45,7 +67,7 @@ export class ScriptedPayableModel extends Model<ScriptedModelConfig> {
   ): AsyncIterable<ModelStreamEvent> {
     yield { type: "modelMessageStartEvent", role: "assistant" };
 
-    const next = steps[this.step++];
+    const next = this.steps[this.step++];
     if (next) {
       yield {
         type: "modelContentBlockStartEvent",

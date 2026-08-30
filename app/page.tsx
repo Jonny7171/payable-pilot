@@ -112,8 +112,8 @@ export default function Home() {
             {serpApiMode && (
               <div className="supplier-check">
                 <span>Live supplier intelligence</span>
-                <strong>SerpApi sources attached</strong>
-                <p>Identity matches and current adverse-news results are kept with the review record.</p>
+                <strong>Search completed, identity unverified</strong>
+                <p>No matching source was found for this fictional supplier, so the agent made no adverse claim.</p>
               </div>
             )}
 
@@ -144,7 +144,22 @@ export default function Home() {
 
         <footer>
           <div><span className="footer-mark">P</span> PayablePilot</div>
-          <p>{nebiusMode ? "Strands with Nemotron on Nebius" : serpApiMode ? "Strands with SerpApi supplier research" : "Strands agent run with four explicit tools"}</p>
+          <p>
+            {nebiusMode ? "Strands with Nemotron on Nebius" : serpApiMode ? "Strands with live SerpApi supplier research" : "Strands agent run with four explicit tools"}
+            {serpApiMode && (
+              <>
+                {" · "}
+                <a
+                  className="proof-link"
+                  href="https://jonny7171.github.io/payable-pilot/proof/strands-serpapi-run.json"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Open run evidence
+                </a>
+              </>
+            )}
+          </p>
         </footer>
       </main>
     </div>

@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  researchVendor,
   summarizeVendorIntel,
   supplierIdentityQuery,
 } from "../src/vendor-intel.js";
@@ -50,4 +51,29 @@ test("reports an unverified identity without inventing a fraud finding", () => {
 
 test("removes punctuation-only initials from the identity query", () => {
   assert.equal(supplierIdentityQuery("W.W. Grainger"), '"grainger" official company');
+});
+
+test("treats a successful empty search as unverified instead of crashing", async () => {
+  const originalKey = process.env.SERPAPI_API_KEY;
+  const originalFetch = globalThis.fetch;
+  process.env.SERPAPI_API_KEY = "test-key";
+  globalThis.fetch = async () =>
+    new Response(
+      JSON.stringify({
+        error: "Google hasn't returned any results for this query.",
+        search_metadata: { id: "empty-search", status: "Success" },
+      }),
+      { status: 200, headers: { "content-type": "application/json" } },
+    );
+
+  try {
+    const result = await researchVendor("Everett Workplace Systems");
+    assert.equal(result.identity.status, "unverified");
+    assert.deepEqual(result.adverseNews, []);
+    assert.deepEqual(result.searchIds, ["empty-search", "empty-search"]);
+  } finally {
+    globalThis.fetch = originalFetch;
+    if (originalKey === undefined) delete process.env.SERPAPI_API_KEY;
+    else process.env.SERPAPI_API_KEY = originalKey;
+  }
 });

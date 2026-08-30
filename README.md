@@ -12,6 +12,9 @@ https://jonny7171.github.io/payable-pilot/?engine=nebius
 Try the SerpApi supplier-intelligence mode:
 https://jonny7171.github.io/payable-pilot/?engine=serpapi
 
+Inspect the latest sanitized Strands + SerpApi run evidence:
+https://jonny7171.github.io/payable-pilot/proof/strands-serpapi-run.json
+
 Watch the 48-second walkthrough: https://youtu.be/szxQIb9EidQ
 
 The included run processes two fictional packets. It clears the packet whose
@@ -30,8 +33,10 @@ amount.
 
 The public page is a replay of the included fixture so the review state is easy
 to inspect without AWS credentials. The repository contains the executable
-Strands loop, an offline test model, the four workflow tools, and tests that
-verify the tool order and the $200 result.
+Strands loop, a deterministic test model, four core workflow tools, one optional
+live supplier-research tool, and tests that verify the tool order and the $200
+result. The linked evidence file proves a real Strands tool loop with live
+SerpApi calls. It does not claim to be a Bedrock, AgentCore, or live-LLM run.
 
 ## Architecture
 
@@ -53,10 +58,13 @@ pnpm install
 pnpm test
 pnpm demo
 pnpm agent:offline
+pnpm agent:proof
 ```
 
 `agent:offline` drives the real Strands agent loop with a deterministic test
 model. It is a credential-free integration harness, not the production model.
+`agent:proof` loads `.env.local`, runs the same loop with live supplier research,
+and prints the tool calls and results used to create the public proof file.
 
 ## Run the Strands agent
 
@@ -87,6 +95,7 @@ The Strands agent uses these custom tools:
 - `inspect_invoice_packet`
 - `clear_clean_packet`
 - `queue_human_review`
+- `research_supplier_risk` when `SERPAPI_API_KEY` is present
 
 ## Run with NVIDIA Nemotron on Nebius
 
@@ -118,6 +127,7 @@ identity as unverified, but it never invents a fraud label or risk score.
 
 ```bash
 SERPAPI_API_KEY=your_key pnpm vendor:intel PP-2086
+SERPAPI_API_KEY=your_key pnpm agent:proof
 ```
 
 The agent uses this live context before asking a person to decide what happens
