@@ -24,10 +24,10 @@ IDs are kept with the review record.
 ## Live proof completed August 30, 2026
 
 - The real Strands loop called `research_supplier_risk` before escalating PP-2086.
-- SerpApi returned search IDs `6a9455d3a26f561ba156354a` and `6a9455d3a8dce6cfd2c9beba`.
+- SerpApi returned search IDs `6a94df93f5d5ac5b25f68c31` and `6a94df9369819d77d048cb02`.
 - The fictional supplier remained unverified and no adverse claim was made.
 - PP-2087 cleared and PP-2086 stayed behind the human approval boundary.
-- All 12 tests passed.
+- All 14 tests passed.
 - Public evidence: https://jonny7171.github.io/payable-pilot/proof/strands-serpapi-run.json
 
 ## Still to do

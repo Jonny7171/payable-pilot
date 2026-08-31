@@ -20,7 +20,7 @@ I used the Strands Agents SDK for the agent loop and tool selection. A separate 
 
 The repository also includes an AgentCore-compatible HTTP runtime, a deterministic test model that exercises the real Strands loop without cloud credentials, and 14 tests for the agent, financial checks, supplier evidence, HTTP invocation contract, and API response.
 
-The public page replays the included fixture so judges can inspect both agent states without AWS credentials. It is not presented as a live accounting connection. The SerpApi view is backed by a real run completed on August 30. One public evidence file includes the six-tool sequence, both search IDs, and the verified $200 calculation. A second proves the AgentCore-compatible `/ping` and `/invocations` contract locally. Both disclose that they are not an AWS deployment or Bedrock run.
+The public page replays the included fixture so judges can inspect both agent states without AWS credentials. It is not presented as a live accounting connection. The SerpApi view is backed by a fresh live run completed on August 30. One public evidence file includes the six-tool sequence, both search IDs, and the verified $200 calculation. A second proves the AgentCore-compatible `/ping` and `/invocations` contract locally. Both disclose that they are not an AWS deployment or Bedrock run.
 
 ## Challenges
 

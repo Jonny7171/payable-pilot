@@ -1,6 +1,6 @@
 {
   "run": {
-    "completedAt": "2026-08-30T16:11:01.698Z",
+    "completedAt": "2026-08-31T02:01:44.256Z",
     "agentRuntime": "@strands-agents/sdk",
     "model": "deterministic test model",
     "liveDataProvider": "SerpApi",
@@ -23,10 +23,10 @@
     "identity": "unverified",
     "adverseNews": [],
     "searchIds": [
-      "6a9455d3a26f561ba156354a",
-      "6a9455d3a8dce6cfd2c9beba"
+      "6a94df93f5d5ac5b25f68c31",
+      "6a94df9369819d77d048cb02"
     ],
-    "checkedAt": "2026-08-30T16:11:01.694Z",
+    "checkedAt": "2026-08-31T02:01:44.254Z",
     "interpretation": "The supplier is fictional. No matching source was found, so the agent made no adverse claim."
   },
   "decision": {
@@ -40,7 +40,7 @@
     "proposedAction": "HOLD_AND_REQUEST_CREDIT"
   },
   "tests": {
-    "passed": 12,
+    "passed": 14,
     "failed": 0
   }
 }
