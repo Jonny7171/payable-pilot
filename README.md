@@ -54,6 +54,19 @@ flowchart LR
   E --> F[Human decision]
 ```
 
+## Agents for Humans entry
+
+PayablePilot was created on August 27, 2026, during the Agents for Humans
+submission period. It enters the Professional Agents track as a Strands agent
+for small finance teams. The agent handles the invoice queue end to end, while
+ordinary TypeScript owns every comparison and dollar amount.
+
+The repository includes the public interface, a real Strands tool loop, an
+AgentCore-compatible HTTP runtime, the architecture diagram, sanitized run
+evidence, and 14 tests. The runtime contract is verified locally and is not
+presented as an AgentCore cloud deployment. The full submission draft and judge
+checklist are in [docs/agents-for-humans-submission.md](docs/agents-for-humans-submission.md).
+
 ## Run the deterministic workflow
 
 ```bash
