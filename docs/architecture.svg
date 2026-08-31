@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620" role="img" aria-labelledby="title desc">
   <title id="title">PayablePilot architecture</title>
-  <desc id="desc">A Strands agent processes invoice packets with explicit tools, clears matched packets, and sends exceptions to a reviewer.</desc>
+  <desc id="desc">A Strands agent processes invoice packets with explicit tools, clears matched packets, and uses SerpApi supplier evidence before sending exceptions to a reviewer.</desc>
   <defs>
     <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="#7b847f"/></marker>
     <style>.label{font:700 18px Inter,Arial,sans-serif;fill:#202321}.small{font:500 14px Inter,Arial,sans-serif;fill:#68706c}.eyebrow{font:800 12px Inter,Arial,sans-serif;fill:#3d5548;letter-spacing:1.3px}.tool{font:600 13px ui-monospace,SFMono-Regular,Menlo,monospace;fill:#3d5548}.line{fill:none;stroke:#7b847f;stroke-width:2;marker-end:url(#arrow)}</style>
@@ -8,8 +8,8 @@
   <rect width="1200" height="620" fill="#f3f3ef"/>
   <text x="70" y="70" class="eyebrow">PAYABLEPILOT</text>
   <text x="70" y="106" class="label" style="font-size:28px">Strands picks the tool. Code checks the amount.</text>
-  <text x="70" y="138" class="small" style="font-size:17px">A reviewer decides what happens to an exception.</text>
-  <path class="line" d="M245 250H355"/><path class="line" d="M600 250H710"/><path class="line" d="M865 218V168H1000V205"/><path class="line" d="M865 282V400H1000V362"/><path class="line" d="M1000 438V500H680"/>
+  <text x="70" y="138" class="small" style="font-size:17px">Live supplier evidence informs the review. A person still decides.</text>
+  <path class="line" d="M245 250H355"/><path class="line" d="M600 250H700"/><path class="line" d="M890 215H950"/><path class="line" d="M795 350V390"/><path class="line" d="M890 447H950"/><path class="line" d="M950 455H900V535H650"/>
   <g>
     <rect x="60" y="180" width="185" height="140" rx="8" fill="#fff" stroke="#d9ddda"/>
     <circle cx="104" cy="223" r="19" fill="#edf2ee"/><path d="M94 215h20v18H94zM98 211h12" fill="none" stroke="#3d5548" stroke-width="2.5"/>
@@ -23,21 +23,25 @@
     <text x="385" y="304" style="font:500 14px Inter,Arial,sans-serif;fill:#e6ebe8">Cannot approve exceptions</text>
   </g>
   <g>
-    <rect x="710" y="165" width="155" height="170" rx="8" fill="#fff" stroke="#d9ddda"/>
-    <text x="736" y="204" class="eyebrow">TOOLS</text><text x="736" y="239" class="tool">list</text><text x="736" y="268" class="tool">inspect</text><text x="736" y="297" class="tool">clear / queue</text>
+    <rect x="700" y="165" width="190" height="185" rx="8" fill="#fff" stroke="#d9ddda"/>
+    <text x="726" y="204" class="eyebrow">TOOLS</text><text x="726" y="239" class="tool">list packets</text><text x="726" y="268" class="tool">inspect match</text><text x="726" y="297" class="tool">research supplier</text><text x="726" y="326" class="tool">clear / queue</text>
   </g>
   <g>
-    <rect x="930" y="180" width="210" height="145" rx="8" fill="#e8f2ec" stroke="#b9d2c3"/>
-    <circle cx="969" cy="222" r="17" fill="#2f6b4f"/><path d="M961 222l6 6 11-13" fill="none" stroke="#fff" stroke-width="3"/>
-    <text x="959" y="270" class="label">Clean packet</text><text x="959" y="295" class="small">Clear for payment</text>
+    <rect x="950" y="170" width="190" height="135" rx="8" fill="#e8f2ec" stroke="#b9d2c3"/>
+    <circle cx="985" cy="208" r="17" fill="#2f6b4f"/><path d="M977 208l6 6 11-13" fill="none" stroke="#fff" stroke-width="3"/>
+    <text x="975" y="255" class="label">Clean packet</text><text x="975" y="280" class="small">Clear for payment</text>
   </g>
   <g>
-    <rect x="930" y="360" width="210" height="150" rx="8" fill="#fbebdc" stroke="#dfb991"/>
-    <circle cx="969" cy="402" r="17" fill="#9a501a"/><text x="969" y="408" text-anchor="middle" style="font:800 18px Inter,Arial,sans-serif;fill:white">!</text>
-    <text x="959" y="449" class="label">Verified exception</text><text x="959" y="475" class="small">Queue one decision</text>
+    <rect x="700" y="390" width="190" height="115" rx="8" fill="#eef6f3" stroke="#b9d2c3"/>
+    <text x="726" y="427" class="eyebrow">SERPAPI</text><text x="726" y="458" class="label">Supplier identity</text><text x="726" y="482" class="small">Live sources + news</text>
   </g>
   <g>
-    <rect x="420" y="455" width="260" height="105" rx="8" fill="#fff" stroke="#c8ceca"/>
-    <text x="451" y="493" class="eyebrow">REVIEWER</text><text x="451" y="527" class="label">Approve or override</text>
+    <rect x="950" y="360" width="190" height="150" rx="8" fill="#fbebdc" stroke="#dfb991"/>
+    <circle cx="985" cy="402" r="17" fill="#9a501a"/><text x="985" y="408" text-anchor="middle" style="font:800 18px Inter,Arial,sans-serif;fill:white">!</text>
+    <text x="975" y="449" class="label">Verified exception</text><text x="975" y="475" class="small">Queue one decision</text>
+  </g>
+  <g>
+    <rect x="390" y="455" width="260" height="105" rx="8" fill="#fff" stroke="#c8ceca"/>
+    <text x="421" y="493" class="eyebrow">REVIEWER</text><text x="421" y="527" class="label">Approve or override</text>
   </g>
 </svg>

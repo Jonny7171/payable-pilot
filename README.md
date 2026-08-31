@@ -25,7 +25,7 @@ purchase order, invoice, and receipt agree. It holds the other because eight
 monitor arms were invoiced at $119 each instead of the $94 purchase-order rate.
 The resulting price difference is $200.
 
-![PayablePilot dashboard](docs/payable-pilot-dashboard.jpg)
+![PayablePilot live SerpApi review](docs/serpapi-live.jpg)
 
 ## What the agent does
 
@@ -154,8 +154,9 @@ or contact a supplier on a person's behalf.
 
 ## Hackathon status
 
-This repository was started on August 27, 2026 during the Agents for Humans
-submission period. It is a new implementation for that event. It does not copy
-source code from the earlier ClearPacket project.
+This repository was started on August 27, 2026 during the DevNetwork API +
+Cloud + AI Hackathon 2026. It is a separate implementation with its own invoice
+fixtures, agent workflow, SerpApi integration, interface, and tests. It does not
+copy source code from the earlier ClearPacket project.
 
 License: MIT

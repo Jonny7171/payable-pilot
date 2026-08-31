@@ -1,6 +1,6 @@
 {
   "run": {
-    "completedAt": "2026-08-31T02:01:44.256Z",
+    "completedAt": "2026-08-31T02:08:21.669Z",
     "agentRuntime": "@strands-agents/sdk",
     "model": "deterministic test model",
     "liveDataProvider": "SerpApi",
@@ -17,17 +17,40 @@
   ],
   "supplierResearch": {
     "packetId": "PP-2086",
-    "supplier": "Everett Workplace Systems",
+    "supplier": "CDW Canada Corp.",
     "provider": "SerpApi",
     "status": "success",
-    "identity": "unverified",
+    "identity": {
+      "status": "matched",
+      "sources": [
+        {
+          "title": "CDW Canada",
+          "link": "https://oecm.ca/supplier-partners/cdw-canada/",
+          "snippet": "CDW Canada Corp. is a leading provider of technology services and solutions for business, government, education and healthcare.",
+          "source": "OECM"
+        },
+        {
+          "title": "CDW Canada Opens New Calgary Hub, Deepening Its ...",
+          "link": "https://www.businesswire.com/news/home/20260825764919/en/CDW-Canada-Opens-New-Calgary-Hub-Deepening-Its-Investment-in-Western-Canada",
+          "snippet": "CDW Canada Corp. is a leading provider of technology services and solutions. CDW Canada is a subsidiary of CDW Corporation.",
+          "source": "Business Wire",
+          "date": "6 days ago"
+        },
+        {
+          "title": "CDW Canada Number of Employees 2026",
+          "link": "https://www.reveliolabs.com/companies/cdw-canada/employees",
+          "snippet": "CDW Canada Corp. employs 797 people worldwide as of March 2026.",
+          "source": "Revelio Labs"
+        }
+      ]
+    },
     "adverseNews": [],
     "searchIds": [
-      "6a94df93f5d5ac5b25f68c31",
-      "6a94df9369819d77d048cb02"
+      "6a94e1b72328e1a505c09f75",
+      "6a94e1b7f9aa7341185f653d"
     ],
-    "checkedAt": "2026-08-31T02:01:44.254Z",
-    "interpretation": "The supplier is fictional. No matching source was found, so the agent made no adverse claim."
+    "checkedAt": "2026-08-31T02:08:21.667Z",
+    "interpretation": "Identity matched across three sources. No adverse news matched. The invoice and purchase order are fictional demo records."
   },
   "decision": {
     "cleared": ["PP-2087"],

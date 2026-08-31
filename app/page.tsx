@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import serpApiProof from "../public/proof/strands-serpapi-run.json";
 
 type Decision = "credit" | "override" | null;
 
@@ -107,13 +108,21 @@ export default function Home() {
               <span className="packet-id">PP-2086</span>
             </div>
             <h2>{decision ? (requestedCredit ? "Invoice held. Credit request queued." : "Override recorded. Invoice released.") : "Hold INV-25791 and request a $200.00 credit?"}</h2>
-            <p className="supplier">Everett Workplace Systems · PO-8412</p>
+            <p className="supplier">CDW Canada Corp. · PO-8412 · demo packet</p>
 
             {serpApiMode && (
               <div className="supplier-check">
                 <span>Live supplier intelligence</span>
-                <strong>Search completed, identity unverified</strong>
-                <p>No matching source was found for this fictional supplier, so the agent made no adverse claim.</p>
+                <strong>Identity matched across {serpApiProof.supplierResearch.identity.sources.length} sources</strong>
+                <p>No adverse news matched. The invoice and purchase order are fictional demo records.</p>
+                <div className="supplier-sources">
+                  {serpApiProof.supplierResearch.identity.sources.slice(0, 2).map((source) => (
+                    <a key={source.link} href={source.link} target="_blank" rel="noreferrer">
+                      {source.source}
+                      {source.date ? ` · ${source.date}` : ""}
+                    </a>
+                  ))}
+                </div>
               </div>
             )}
 

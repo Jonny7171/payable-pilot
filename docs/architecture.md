@@ -6,7 +6,8 @@ flowchart LR
   B --> C[List pending packets]
   B --> D[Deterministic three-way match]
   D -->|Clean| E[Clear for payment]
-  D -->|Exception| F[Queue one decision]
+  D -->|Exception| S[SerpApi supplier evidence]
+  S --> F[Queue one decision]
   F --> G[Human approval]
   G --> H[Vendor action and audit record]
 ```

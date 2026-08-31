@@ -2,7 +2,7 @@
 
 ## Tagline
 
-A Strands agent clears matched invoices and stops price exceptions for a person.
+An invoice agent clears clean packets and checks price exceptions with live supplier evidence.
 
 ## Inspiration
 
@@ -10,9 +10,9 @@ Most invoice packets are routine, but someone still has to open them. I wanted t
 
 ## What it does
 
-The included run has two fictional packets. PP-2087 clears because the purchase order, invoice, and receipt agree. PP-2086 stops because Everett Workplace Systems invoiced eight monitor arms at $119 each while the purchase order lists $94. The difference is $25 per unit and $200 in total.
+The included run has two fictional packets. PP-2087 clears because the purchase order, invoice, and receipt agree. PP-2086 stops because eight monitor arms were invoiced at $119 each while the purchase order lists $94. The difference is $25 per unit and $200 in total.
 
-The agent works through six tool calls. It lists the queue, inspects both packets, checks the exception supplier with live SerpApi data, clears the clean packet, and sends the exception to a person. The reviewer can request a credit and hold the invoice or choose to pay it anyway. The agent cannot make that choice.
+The agent works through six tool calls. It lists the queue, inspects both packets, checks the exception supplier with live SerpApi data, clears the clean packet, and sends the exception to a person. CDW Canada is a real supplier reference, while the invoice and purchase order are clearly marked as demo records. The live check found three identity sources and no matching adverse news. The reviewer can request a credit and hold the invoice or choose to pay it anyway. The agent cannot make that choice.
 
 ## How I built it
 
@@ -34,7 +34,7 @@ I also separated this example from my document-verification project. PayablePilo
 - PP-2086 is held on a verified $200 unit-price difference.
 - Six tool calls are captured in the public run evidence.
 - The supplier check completed through SerpApi and returned two search IDs.
-- The fictional supplier remained unverified, so the agent made no adverse claim.
+- The live search matched CDW Canada across three identity sources and found no matching adverse news.
 - A person must make the exception decision.
 - Fourteen tests cover the agent loop, matching rules, HTTP invocation contract, server, and supplier-evidence guardrails.
 
@@ -56,7 +56,7 @@ The useful part of the agent is not financial improvisation. It is choosing the 
 - Run evidence: https://jonny7171.github.io/payable-pilot/proof/strands-serpapi-run.json
 - HTTP runtime proof: https://jonny7171.github.io/payable-pilot/proof/agentcore-contract-run.json
 - Source: https://github.com/Jonny7171/payable-pilot
-- Screenshot: `docs/live-before.jpg`
+- Screenshot: `docs/serpapi-live.jpg`
 - Resolved state: `docs/live-after.jpg`
 - Architecture: `docs/architecture.png`
 - Demo video: https://youtu.be/szxQIb9EidQ

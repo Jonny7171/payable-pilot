@@ -4,7 +4,7 @@
     "status": "pending",
     "purchaseOrder": {
       "number": "PO-8412",
-      "supplier": "Everett Workplace Systems",
+      "supplier": "CDW Canada Corp.",
       "items": [
         {
           "sku": "ARM-DUAL",
@@ -17,7 +17,7 @@
     "invoice": {
       "number": "INV-25791",
       "poNumber": "PO-8412",
-      "supplier": "Everett Workplace Systems",
+      "supplier": "CDW Canada Corp.",
       "items": [
         {
           "sku": "ARM-DUAL",
@@ -30,7 +30,7 @@
     "receipt": {
       "number": "GR-9134",
       "poNumber": "PO-8412",
-      "supplier": "Everett Workplace Systems",
+      "supplier": "CDW Canada Corp.",
       "items": [
         {
           "sku": "ARM-DUAL",

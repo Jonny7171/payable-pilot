@@ -310,6 +310,17 @@ h2 { margin: 0; font-size: 23px; letter-spacing: -0.035em; }
 
 .supplier-check strong { display: block; margin-top: 5px; font-size: 14px; }
 .supplier-check p { margin: 4px 0 0; color: var(--muted); font-size: 11px; line-height: 1.4; }
+.supplier-sources { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 9px; }
+.supplier-sources a {
+  padding: 4px 7px;
+  border: 1px solid #bdded4;
+  border-radius: 999px;
+  color: var(--green);
+  font-size: 10px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.supplier-sources a:hover { background: #e2f5ef; }
 
 .evidence-grid {
   display: grid;

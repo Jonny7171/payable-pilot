@@ -24,8 +24,9 @@ IDs are kept with the review record.
 ## Live proof completed August 30, 2026
 
 - The real Strands loop called `research_supplier_risk` before escalating PP-2086.
-- SerpApi returned search IDs `6a94df93f5d5ac5b25f68c31` and `6a94df9369819d77d048cb02`.
-- The fictional supplier remained unverified and no adverse claim was made.
+- SerpApi returned search IDs `6a94e1b72328e1a505c09f75` and `6a94e1b7f9aa7341185f653d`.
+- The search matched CDW Canada across three identity sources and found no matching adverse news.
+- The invoice and purchase order are fictional demo records. Search results are treated as evidence, not a verdict.
 - PP-2087 cleared and PP-2086 stayed behind the human approval boundary.
 - All 14 tests passed.
 - Public evidence: https://jonny7171.github.io/payable-pilot/proof/strands-serpapi-run.json

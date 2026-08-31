@@ -32,7 +32,7 @@ Open the SerpApi view and point to the supplier intelligence box.
 
 Say:
 
-"For the exception packet, the Strands agent also ran a live supplier check through SerpApi. This supplier is fictional, so the identity stayed unverified. The important part is that the agent says exactly that. It does not turn missing evidence into a fraud claim."
+"For the exception packet, the Strands agent also ran a live supplier check through SerpApi. It matched CDW Canada across three sources and found no adverse news tied to the company. The invoice itself is a demo record. Search results are evidence here, not a fraud verdict."
 
 ## 1:10 to 1:28
 

@@ -1,4 +1,5 @@
 from pathlib import Path
+import json
 
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 
@@ -41,7 +42,7 @@ def intro() -> Image.Image:
     draw.text((112, 270), "One price exception. One reviewer decision.", font=font(66, bold=True), fill=INK)
 
     rows = [
-        ("SUPPLIER", "Everett Workplace Systems"),
+        ("SUPPLIER", "CDW Canada Corp. (demo record)"),
         ("PO / INVOICE", "$94.00 / $119.00 per unit"),
         ("QUANTITY", "8 dual monitor arms"),
         ("HELD FROM PAYMENT", "$200.00"),
@@ -73,24 +74,52 @@ def product_scene(asset_name: str, step: str, note: str, caption: str) -> Image.
 def architecture_scene() -> Image.Image:
     image = Image.new("RGB", SIZE, PAPER)
     draw = ImageDraw.Draw(image)
-    header(draw, "04 / 05", "The agent selects tools. Code verifies the amount.")
+    header(draw, "05 / 06", "The agent selects tools. Code verifies the amount.")
     source = Image.open(DOCS / "architecture.png").convert("RGB")
     fitted = ImageOps.contain(source, (1700, 800), Image.Resampling.LANCZOS)
     x = (SIZE[0] - fitted.width) // 2
     y = 185 + (800 - fitted.height) // 2
     image.paste(fitted, (x, y))
-    draw.text((76, 1016), "Four explicit tools make the run inspectable and keep financial math deterministic.", font=font(27, bold=True), fill=INK)
+    draw.text((76, 1016), "Six recorded tool calls keep the search, math, and decision boundary inspectable.", font=font(27, bold=True), fill=INK)
+    return image
+
+
+def proof_scene() -> Image.Image:
+    image = Image.new("RGB", SIZE, PAPER)
+    draw = ImageDraw.Draw(image)
+    header(draw, "03 / 06", "The public proof records the live search and the financial decision")
+    proof = json.loads((ROOT / "public" / "proof" / "strands-serpapi-run.json").read_text())
+    research = proof["supplierResearch"]
+    decision = proof["decision"]
+    source_names = ", ".join(source["source"] for source in research["identity"]["sources"])
+    rows = [
+        ("SUPPLIER", research["supplier"]),
+        ("IDENTITY", f"Matched across {len(research['identity']['sources'])} live sources"),
+        ("SOURCES", source_names),
+        ("ADVERSE NEWS", "No matching result"),
+        ("DECISION", f"${decision['verifiedImpact']:.2f} held for a person"),
+    ]
+    top = 220
+    for index, (label, value) in enumerate(rows):
+        y = top + index * 130
+        draw.line((90, y, 1830, y), fill=RULE, width=2)
+        draw.text((110, y + 35), label, font=font(22, mono=True), fill=MUTED)
+        draw.text((530, y + 28), value, font=font(34, bold=True), fill=AMBER if label == "DECISION" else INK)
+    draw.line((90, top + len(rows) * 130, 1830, top + len(rows) * 130), fill=RULE, width=2)
+    draw.text((110, 920), "SERPAPI SEARCH IDS", font=font(20, mono=True), fill=MUTED)
+    draw.text((530, 912), "  /  ".join(research["searchIds"]), font=font(22, mono=True), fill=FOREST)
+    draw.text((76, 1016), "Search results are evidence, not a fraud verdict. The invoice and PO are demo records.", font=font(27, bold=True), fill=INK)
     return image
 
 
 def source_scene() -> Image.Image:
     image = Image.new("RGB", SIZE, PAPER)
     draw = ImageDraw.Draw(image)
-    header(draw, "05 / 05", "The public demo replays the included fixture")
+    header(draw, "06 / 06", "The public demo replays the included fixture")
     rows = [
         ("AGENT", "Strands Agents SDK"),
-        ("TOOLS", "list / inspect / hold / clear"),
-        ("TESTS", "10 passing tests cover the agent, domain checks, and server"),
+        ("TOOLS", "list / inspect / research / hold / clear"),
+        ("TESTS", "14 passing tests cover the agent, search guardrails, and server"),
         ("FIXTURE", "PP-2086 and PP-2087 are included in the repository"),
     ]
     top = 250
@@ -113,16 +142,17 @@ def main() -> None:
     scenes = [
         intro(),
         product_scene(
-            "live-before.jpg",
-            "02 / 05",
-            "The agent cleared PP-2087 and held PP-2086",
-            "The four tool calls, source references, and $200.00 difference are visible together.",
+            "serpapi-live.jpg",
+            "02 / 06",
+            "SerpApi matched the supplier across three live sources",
+            "The agent found no adverse-news match and kept the $200.00 exception behind review.",
         ),
+        proof_scene(),
         product_scene(
-            "live-after.jpg",
-            "03 / 05",
+            "serpapi-resolved.jpg",
+            "04 / 06",
             "The reviewer approved the credit request and hold",
-            "The pending count drops to zero and the decision becomes the fourth recorded event.",
+            "The agent researched and queued the exception. A person made the money decision.",
         ),
         architecture_scene(),
         source_scene(),
