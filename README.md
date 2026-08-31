@@ -18,7 +18,7 @@ https://jonny7171.github.io/payable-pilot/proof/strands-serpapi-run.json
 Inspect the AgentCore-compatible HTTP contract proof:
 https://jonny7171.github.io/payable-pilot/proof/agentcore-contract-run.json
 
-Watch the 48-second walkthrough: https://youtu.be/szxQIb9EidQ
+Watch the 90-second walkthrough: https://youtu.be/heL39mqdcvM
 
 The included run processes two fictional packets. It clears the packet whose
 purchase order, invoice, and receipt agree. It holds the other because eight

@@ -59,4 +59,4 @@ The useful part of the agent is not financial improvisation. It is choosing the 
 - Screenshot: `docs/serpapi-live.jpg`
 - Resolved state: `docs/live-after.jpg`
 - Architecture: `docs/architecture.png`
-- Demo video: https://youtu.be/szxQIb9EidQ
+- Demo video: https://youtu.be/heL39mqdcvM

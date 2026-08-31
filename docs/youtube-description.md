@@ -1,4 +1,4 @@
-PayablePilot runs two fictional invoice packets through a Strands agent. This 48-second walkthrough shows PP-2087 clearing, PP-2086 stopping on a verified $200 unit-price difference, and a person recording the credit request and hold.
+PayablePilot runs two fictional invoice packets through a Strands agent. This 90-second walkthrough shows PP-2087 clearing, PP-2086 stopping on a verified $200 unit-price difference, and a person recording the credit request and hold.
 
 August 30 update: I added a live supplier check through SerpApi. It matched CDW Canada across three identity sources and found no adverse news tied to the company. The invoice and purchase order are fictional demo records. The public evidence file records the six-tool Strands run, both SerpApi search IDs, the $200 calculation, and the human review state.
 
