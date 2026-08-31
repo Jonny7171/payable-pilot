@@ -22,3 +22,17 @@ test("configures the guarded Nebius Token Factory model", () => {
     else process.env.NEBIUS_API_KEY = priorKey;
   }
 });
+
+test("configures the deterministic model only when explicitly requested", () => {
+  const priorProvider = process.env.PAYABLE_MODEL_PROVIDER;
+  process.env.PAYABLE_MODEL_PROVIDER = "scripted";
+
+  try {
+    const model = createPayableModel();
+    assert.equal(selectedModelProvider(), "scripted");
+    assert.equal(model.getConfig().modelId, "scripted-payable-demo");
+  } finally {
+    if (priorProvider === undefined) delete process.env.PAYABLE_MODEL_PROVIDER;
+    else process.env.PAYABLE_MODEL_PROVIDER = priorProvider;
+  }
+});

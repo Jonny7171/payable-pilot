@@ -13,6 +13,7 @@
     "agent:offline": "tsx src/offline-agent.ts",
     "agent:proof": "node --env-file=.env.local --import tsx src/offline-agent.ts",
     "agentcore:build": "tsc -p tsconfig.agentcore.json",
+    "agentcore:offline": "PAYABLE_MODEL_PROVIDER=scripted node agentcore-dist/src/server.js",
     "agentcore:start": "node agentcore-dist/src/server.js",
     "api:decision": "tsx src/server.ts",
     "build": "vinext build",

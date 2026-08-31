@@ -1,0 +1,31 @@
+{
+  "run": {
+    "completedAt": "2026-08-31T00:43:00Z",
+    "runtimeContract": "AgentCore-compatible HTTP",
+    "model": "deterministic test model",
+    "mode": "local proof"
+  },
+  "disclosure": "This proves the local HTTP runtime contract and full Strands invocation path. It is not an AWS AgentCore deployment or Bedrock run.",
+  "healthCheck": {
+    "method": "GET",
+    "path": "/ping",
+    "statusCode": 200,
+    "response": {
+      "status": "Healthy"
+    }
+  },
+  "invocation": {
+    "method": "POST",
+    "path": "/invocations",
+    "statusCode": 200,
+    "prompt": "Process every pending invoice packet.",
+    "clearedPackets": ["PP-2087"],
+    "humanReviews": ["PP-2086"],
+    "verifiedImpact": 200,
+    "proposedAction": "REQUEST_CREDIT"
+  },
+  "tests": {
+    "passed": 14,
+    "failed": 0
+  }
+}

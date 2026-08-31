@@ -8,6 +8,9 @@ https://jonny7171.github.io/payable-pilot/?engine=serpapi
 Run evidence:
 https://jonny7171.github.io/payable-pilot/proof/strands-serpapi-run.json
 
+AgentCore-compatible HTTP contract proof:
+https://jonny7171.github.io/payable-pilot/proof/agentcore-contract-run.json
+
 Source:
 https://github.com/Jonny7171/payable-pilot
 

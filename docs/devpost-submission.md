@@ -18,9 +18,9 @@ The agent works through six tool calls. It lists the queue, inspects both packet
 
 I used the Strands Agents SDK for the agent loop and tool selection. A separate TypeScript domain layer reads the packet fixture, checks the three documents, and calculates the price difference. That separation matters: the agent controls the sequence, but code owns quantities, prices, and the final dollar amount.
 
-The repository also includes an AgentCore-compatible HTTP runtime, a deterministic test model that exercises the real Strands loop without cloud credentials, and 12 tests for the agent, financial checks, supplier evidence, and API response.
+The repository also includes an AgentCore-compatible HTTP runtime, a deterministic test model that exercises the real Strands loop without cloud credentials, and 14 tests for the agent, financial checks, supplier evidence, HTTP invocation contract, and API response.
 
-The public page replays the included fixture so judges can inspect both agent states without AWS credentials. It is not presented as a live accounting connection. The SerpApi view is backed by a real run completed on August 30. The public evidence file includes the six-tool sequence, both search IDs, the verified $200 calculation, and a clear disclosure that the run used a deterministic test model rather than Bedrock or a live LLM.
+The public page replays the included fixture so judges can inspect both agent states without AWS credentials. It is not presented as a live accounting connection. The SerpApi view is backed by a real run completed on August 30. One public evidence file includes the six-tool sequence, both search IDs, and the verified $200 calculation. A second proves the AgentCore-compatible `/ping` and `/invocations` contract locally. Both disclose that they are not an AWS deployment or Bedrock run.
 
 ## Challenges
 
@@ -36,7 +36,7 @@ I also separated this example from my document-verification project. PayablePilo
 - The supplier check completed through SerpApi and returned two search IDs.
 - The fictional supplier remained unverified, so the agent made no adverse claim.
 - A person must make the exception decision.
-- Twelve tests cover the agent loop, matching rules, server, and supplier-evidence guardrails.
+- Fourteen tests cover the agent loop, matching rules, HTTP invocation contract, server, and supplier-evidence guardrails.
 
 ## What I learned
 
@@ -54,6 +54,7 @@ The useful part of the agent is not financial improvisation. It is choosing the 
 - Public demo: https://jonny7171.github.io/payable-pilot/
 - Live supplier view: https://jonny7171.github.io/payable-pilot/?engine=serpapi
 - Run evidence: https://jonny7171.github.io/payable-pilot/proof/strands-serpapi-run.json
+- HTTP runtime proof: https://jonny7171.github.io/payable-pilot/proof/agentcore-contract-run.json
 - Source: https://github.com/Jonny7171/payable-pilot
 - Screenshot: `docs/live-before.jpg`
 - Resolved state: `docs/live-after.jpg`

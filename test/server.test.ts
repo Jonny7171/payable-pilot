@@ -51,3 +51,36 @@ test("rejects a decision request without a packet ID", async () => {
     });
   });
 });
+
+test("runs the AgentCore invocation contract end to end in local proof mode", async () => {
+  const priorProvider = process.env.PAYABLE_MODEL_PROVIDER;
+  const priorSerpApiKey = process.env.SERPAPI_API_KEY;
+  process.env.PAYABLE_MODEL_PROVIDER = "scripted";
+  delete process.env.SERPAPI_API_KEY;
+
+  try {
+    await withServer(async (baseUrl) => {
+      const response = await fetch(`${baseUrl}/invocations`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ prompt: "Process every pending invoice packet." }),
+      });
+      const result = (await response.json()) as {
+        clearedPackets: string[];
+        humanReviews: Array<{ packetId: string }>;
+      };
+
+      assert.equal(response.status, 200);
+      assert.deepEqual(result.clearedPackets, ["PP-2087"]);
+      assert.deepEqual(result.humanReviews.map((review) => review.packetId), [
+        "PP-2086",
+      ]);
+    });
+  } finally {
+    if (priorProvider === undefined) delete process.env.PAYABLE_MODEL_PROVIDER;
+    else process.env.PAYABLE_MODEL_PROVIDER = priorProvider;
+
+    if (priorSerpApiKey === undefined) delete process.env.SERPAPI_API_KEY;
+    else process.env.SERPAPI_API_KEY = priorSerpApiKey;
+  }
+});

@@ -1,13 +1,22 @@
 import { BedrockModel } from "@strands-agents/sdk/models/bedrock";
 import { OpenAIModel } from "@strands-agents/sdk/models/openai";
+import { ScriptedPayableModel } from "./scripted-model.js";
 
-export type ModelProvider = "bedrock" | "nebius";
+export type ModelProvider = "bedrock" | "nebius" | "scripted";
 
 export function selectedModelProvider(): ModelProvider {
-  return process.env.PAYABLE_MODEL_PROVIDER === "nebius" ? "nebius" : "bedrock";
+  const provider = process.env.PAYABLE_MODEL_PROVIDER;
+  if (provider === "nebius" || provider === "scripted") return provider;
+  return "bedrock";
 }
 
 export function createPayableModel() {
+  if (selectedModelProvider() === "scripted") {
+    return new ScriptedPayableModel({
+      includeSupplierResearch: Boolean(process.env.SERPAPI_API_KEY),
+    });
+  }
+
   if (selectedModelProvider() === "nebius") {
     const apiKey = process.env.NEBIUS_API_KEY;
     if (!apiKey) {

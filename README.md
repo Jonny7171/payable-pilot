@@ -15,6 +15,9 @@ https://jonny7171.github.io/payable-pilot/?engine=serpapi
 Inspect the latest sanitized Strands + SerpApi run evidence:
 https://jonny7171.github.io/payable-pilot/proof/strands-serpapi-run.json
 
+Inspect the AgentCore-compatible HTTP contract proof:
+https://jonny7171.github.io/payable-pilot/proof/agentcore-contract-run.json
+
 Watch the 48-second walkthrough: https://youtu.be/szxQIb9EidQ
 
 The included run processes two fictional packets. It clears the packet whose
@@ -80,6 +83,15 @@ and `/invocations` endpoints:
 
 ```bash
 pnpm agentcore:build
+pnpm agentcore:offline
+```
+
+`agentcore:offline` runs the full HTTP invocation contract with the explicit
+deterministic proof model. It verifies the runtime without cloud credentials
+and is not presented as an AgentCore deployment or Bedrock run. For the real
+Bedrock-backed runtime, configure AWS credentials and run:
+
+```bash
 pnpm agentcore:start
 ```
 
