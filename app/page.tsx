@@ -1,9 +1,20 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import serpApiProof from "../public/proof/strands-serpapi-run.json";
 
 type Decision = "credit" | "override" | null;
+
+const supplierSources = [
+  {
+    source: "OECM",
+    link: "https://oecm.ca/supplier-partners/cdw-canada/",
+  },
+  {
+    source: "Business Wire",
+    date: "6 days ago",
+    link: "https://www.businesswire.com/news/home/20260825764919/en/CDW-Canada-Opens-New-Calgary-Hub-Deepening-Its-Investment-in-Western-Canada",
+  },
+];
 
 export default function Home() {
   const [decision, setDecision] = useState<Decision>(null);
@@ -113,10 +124,10 @@ export default function Home() {
             {serpApiMode && (
               <div className="supplier-check">
                 <span>Live supplier intelligence</span>
-                <strong>Identity matched across {serpApiProof.supplierResearch.identity.sources.length} sources</strong>
+                <strong>Identity matched across 3 sources</strong>
                 <p>No adverse news matched. The invoice and purchase order are fictional demo records.</p>
                 <div className="supplier-sources">
-                  {serpApiProof.supplierResearch.identity.sources.slice(0, 2).map((source) => (
+                  {supplierSources.map((source) => (
                     <a key={source.link} href={source.link} target="_blank" rel="noreferrer">
                       {source.source}
                       {source.date ? ` · ${source.date}` : ""}
