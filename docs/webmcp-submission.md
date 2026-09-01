@@ -5,6 +5,77 @@
 PayablePilot lets a browser agent inspect an accounts-payable exception and
 stage a resolution while keeping the final payment decision with a person.
 
+## Tagline
+
+A browser agent prepares the invoice review. A person makes the payment decision.
+
+## Inspiration
+
+PayablePilot already had a clear safety boundary: the agent could finish routine
+work, but a person had to decide what happened to an invoice exception. WebMCP
+made it possible to carry that same boundary into the browser. The agent no
+longer needs to infer state from a dense dashboard or click the same buttons as
+the reviewer.
+
+## What it does
+
+The page exposes two WebMCP tools. `review_payables_queue` returns the current
+run, source document IDs, exact price variance, allowed actions, and decision
+status. `stage_invoice_resolution` puts one permitted choice into a visible
+Agent Draft. It cannot confirm the draft, release a payment, or contact the
+supplier.
+
+The included run has two fictional invoice packets. One clears. PP-2086 stops
+because eight units were invoiced at $119 instead of the $94 purchase-order
+rate. The deterministic difference is $200. An agent can read that evidence and
+stage the credit-and-hold option. A person still checks the evidence and either
+confirms or dismisses the draft.
+
+## How I built it
+
+The live page is a React and TypeScript app. It registers two tools with
+`document.modelContext.registerTool()`, uses strict JSON Schema inputs, and
+returns concise JSON. The review tool carries the read-only annotation. The
+staging tool updates visible page state but has no code path to record a final
+decision. An `AbortController` unregisters both tools with the component
+lifecycle.
+
+The queue facts live in one typed module shared by the tools and tests. The test
+suite independently checks the $200 calculation, the pending human-confirmation
+status, and rejection of actions outside the two visible choices.
+
+## Challenges
+
+The hard part was making the browser tool useful without quietly widening the
+agent's authority. A tool that clicked the final button would have been easy to
+demo and wrong for the product. I split the flow at the decision boundary: the
+agent can prepare the review, while the final click stays with the person who is
+accountable for the payment.
+
+I also had to treat the existing project honestly. PayablePilot predates this
+challenge, so the repository documents exactly what was added after August 25
+and the dated commits isolate the WebMCP work.
+
+## Accomplishments
+
+- Both tools are detected and callable on the public page in ChatGPT's in-app browser.
+- The live staging call produces the same visible Agent Draft shown in the demo.
+- No agent tool can approve an exception or send anything to a supplier.
+- All 17 tests pass, including three focused WebMCP boundary tests.
+
+## What I learned
+
+The most useful browser tools are often smaller than the interface around them.
+Two narrow tools were enough here. One reports exact state. One prepares a
+reversible draft. Keeping those jobs separate made the agent easier to guide and
+the safety boundary easier to verify.
+
+## What's next
+
+The next step is connecting the same tools to a real authenticated review queue.
+The browser contract would stay narrow, while the server would add organization
+policies, duplicate-invoice checks, reviewer identity, and a durable audit log.
+
 ## Why WebMCP fits
 
 Invoice review is a poor place for an agent to guess from button text. The page
@@ -58,4 +129,3 @@ dated record required for a pre-existing project.
 3. Ask: "Stage the credit-and-hold option for me."
 4. Confirm that the page shows an uncommitted agent draft and still requires a
    human click.
-
