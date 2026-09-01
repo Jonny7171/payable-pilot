@@ -25,6 +25,22 @@ purchase order, invoice, and receipt agree. It holds the other because eight
 monitor arms were invoiced at $119 each instead of the $94 purchase-order rate.
 The resulting price difference is $200.
 
+## WebMCP extension
+
+PayablePilot now exposes two browser-native WebMCP tools:
+
+- `review_payables_queue` returns the queue state, source document IDs, exact
+  price variance, allowed choices, and current human-decision status.
+- `stage_invoice_resolution` places one of the two permitted choices in the
+  visible review panel. It never confirms a decision, sends a supplier message,
+  or releases payment.
+
+The extension was added after August 25, 2026 for The WebMCP Challenge. It is a
+meaningful extension of the existing page, not a claim that the original app
+was built for WebMCP. In a supported browser, ask an agent to review the held
+invoice and stage the safer resolution. A person must still confirm or dismiss
+the draft in the page.
+
 ![PayablePilot live SerpApi review](docs/serpapi-live.jpg)
 
 ## What the agent does
