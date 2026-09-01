@@ -1,6 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
+import {
+  decisionDraftResult,
+  queueReviewResult,
+  type WebMcpDecisionAction,
+} from "../src/webmcp";
 
 type Decision = "credit" | "override" | null;
 
@@ -18,14 +24,110 @@ const supplierSources = [
 
 export default function Home() {
   const [decision, setDecision] = useState<Decision>(null);
+  const [stagedDecision, setStagedDecision] = useState<Exclude<Decision, null> | null>(null);
+  const [webMcpReady, setWebMcpReady] = useState(false);
   const [nebiusMode, setNebiusMode] = useState(false);
   const [serpApiMode, setSerpApiMode] = useState(false);
+  const decisionRef = useRef<Decision>(null);
   const requestedCredit = decision === "credit";
+
+  function recordDecision(nextDecision: Exclude<Decision, null>) {
+    decisionRef.current = nextDecision;
+    setDecision(nextDecision);
+    setStagedDecision(null);
+  }
 
   useEffect(() => {
     const engine = new URLSearchParams(window.location.search).get("engine");
     setNebiusMode(engine === "nebius");
     setSerpApiMode(engine === "serpapi");
+  }, []);
+
+  useEffect(() => {
+    if (!document.modelContext) return;
+
+    const controller = new AbortController();
+    let mounted = true;
+
+    const registrations = [
+      document.modelContext.registerTool(
+        {
+          name: "review_payables_queue",
+          description:
+            "Read the current accounts-payable queue, the held invoice, its source evidence, and the allowed human decisions.",
+          inputSchema: {
+            type: "object",
+            properties: {},
+            additionalProperties: false,
+          },
+          execute: async () => JSON.stringify(queueReviewResult(decisionRef.current)),
+          annotations: {
+            readOnlyHint: true,
+            untrustedContentHint: false,
+          },
+        },
+        { signal: controller.signal },
+      ),
+      document.modelContext.registerTool(
+        {
+          name: "stage_invoice_resolution",
+          description:
+            "Stage one permitted resolution for invoice INV-25791 in the visible review panel. A person must still confirm or dismiss it.",
+          inputSchema: {
+            type: "object",
+            properties: {
+              action: {
+                type: "string",
+                enum: [
+                  "request_credit_and_hold",
+                  "approve_payment_override",
+                ],
+                description: "The resolution to place in front of the reviewer.",
+              },
+            },
+            required: ["action"],
+            additionalProperties: false,
+          },
+          execute: async ({ action }) => {
+            if (decisionRef.current) {
+              return JSON.stringify({
+                status: "already_resolved",
+                recordedDecision: decisionRef.current,
+                control: "The human decision is already recorded. Reload the demo to start a fresh review.",
+              });
+            }
+
+            const draft = decisionDraftResult(action);
+            setStagedDecision(
+              (action as WebMcpDecisionAction) === "request_credit_and_hold"
+                ? "credit"
+                : "override",
+            );
+            document.getElementById("review")?.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+            return JSON.stringify(draft);
+          },
+          annotations: {
+            readOnlyHint: false,
+            untrustedContentHint: false,
+          },
+        },
+        { signal: controller.signal },
+      ),
+    ];
+
+    Promise.all(registrations).then(() => {
+      if (mounted) setWebMcpReady(true);
+    }).catch(() => {
+      if (mounted) setWebMcpReady(false);
+    });
+
+    return () => {
+      mounted = false;
+      controller.abort();
+    };
   }, []);
 
   return (
@@ -111,6 +213,11 @@ export default function Home() {
               <span>Control</span>
               <p>The agent may clear a matched packet. A person must approve any exception.</p>
             </div>
+
+            <div className={`webmcp-status${webMcpReady ? " ready" : ""}`}>
+              <span>{webMcpReady ? "WebMCP live" : "WebMCP ready"}</span>
+              <p>An agent can read this queue and stage a resolution. It cannot confirm the decision.</p>
+            </div>
           </article>
 
           <aside className={`panel decision-panel${decision ? " resolved" : ""}`}>
@@ -152,10 +259,26 @@ export default function Home() {
               <div><i className="source-ok">✓</i><span>Goods receipt</span><code>GR-9134</code></div>
             </div>
 
-            <div className="actions">
-              <button className="primary" onClick={() => setDecision("credit")}>Request credit and hold</button>
-              <button className="secondary" onClick={() => setDecision("override")}>Pay anyway</button>
-            </div>
+            {stagedDecision && !decision ? (
+              <div className="agent-draft">
+                <span>Agent draft</span>
+                <strong>
+                  {stagedDecision === "credit"
+                    ? "Request a $200.00 credit and hold the invoice"
+                    : "Approve payment despite the $200.00 variance"}
+                </strong>
+                <p>Nothing has been approved or sent. Check the evidence, then confirm or dismiss this draft.</p>
+                <div className="actions">
+                  <button className="primary" onClick={() => recordDecision(stagedDecision)}>Confirm decision</button>
+                  <button className="secondary" onClick={() => setStagedDecision(null)}>Dismiss draft</button>
+                </div>
+              </div>
+            ) : (
+              <div className="actions">
+                <button className="primary" onClick={() => recordDecision("credit")}>Request credit and hold</button>
+                <button className="secondary" onClick={() => recordDecision("override")}>Pay anyway</button>
+              </div>
+            )}
             <p className="decision-note">
               {decision ? "The review record now includes this decision." : "No action is taken until a reviewer chooses."}
             </p>
